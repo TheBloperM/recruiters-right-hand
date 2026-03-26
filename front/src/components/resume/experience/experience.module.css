@@ -1,0 +1,38 @@
+.flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.containerFlexGap {
+  gap: 0.5rem;
+}
+
+.flexGap {
+  gap: 1rem;
+}
+
+.itemFlexGap {
+  gap: 0.25rem;
+}
+
+.jobTitle {
+  color: #4459a2;
+  font-size: large;
+  font-weight: 600;
+}
+
+.jobLocation {
+  font-size: larger;
+  font-weight: 500;
+}
+
+.years {
+  font-style: italic;
+  color: #4459a2;
+  font-size: smaller;
+  font-weight: 500;
+}
+
+.comments {
+  font-size: smaller;
+}

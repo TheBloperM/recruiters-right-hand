@@ -1,11 +1,10 @@
 import { useState, type SubmitEvent } from "react";
-import { useFormStatus } from "react-dom";
 import type { Resume } from "recruiters-utils";
+import { useResumeStore } from "../store";
 
 export default function ResumeGenerator() {
   const [jobDescription, setJobDescription] = useState("");
-  const [resume, setResume] = useState<Resume>();
-  const { pending } = useFormStatus();
+  const { setResume } = useResumeStore();
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,7 +25,7 @@ export default function ResumeGenerator() {
         throw new Error(data?.error || "Failed to generate resume");
       }
 
-      setResume(data.resume);
+      setResume(data.resume as Resume);
     } catch (err) {
       console.log(err);
     }
@@ -45,8 +44,6 @@ export default function ResumeGenerator() {
       <button type="submit" disabled={!jobDescription}>
         Generate Resume
       </button>
-
-      {pending ? "currently pending please wait" : JSON.stringify(resume)}
     </form>
   );
 }

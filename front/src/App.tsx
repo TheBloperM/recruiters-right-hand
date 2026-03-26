@@ -1,10 +1,12 @@
-import "./App.css";
-import ResumeGenerator from "./components/ResumeGenerator";
+import Resume from "./components/resume/resume";
+import ResumeGenerator from "./components/resumeGenerator";
 
 function App() {
   return (
     <>
       <ResumeGenerator />
+
+      <Resume />
     </>
   );
 }

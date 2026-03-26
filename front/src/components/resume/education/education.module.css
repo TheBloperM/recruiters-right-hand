@@ -1,0 +1,33 @@
+.infoContainer{
+    display: flex;
+    flex-direction: column;
+    gap:0.25rem;
+}
+
+.flexGap{
+    gap:0.75rem;
+}
+
+
+.educationTitle{
+    color: #4459a2;
+    font-size: large;
+    font-weight: 600;
+}
+
+.educationPlace{
+    font-size: medium;
+    font-weight: 500;
+}
+
+.years{
+    font-style: italic;
+    color: #4459a2 !important;
+    font-size: small !important;
+}
+
+.mainSubjects{
+    font-size: small;
+    color: #4459a2;
+    font-style: italic;
+}

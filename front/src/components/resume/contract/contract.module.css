@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap:0.25rem;
+}
+
+.infoSet {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+}

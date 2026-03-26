@@ -1,0 +1,44 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap:0.75rem;
+}
+
+.title{
+    font-size: large;
+    font-weight: 600;
+    color: #4459a2;
+    border-bottom: 3px solid #4459a2;
+}
+
+.subTitle{
+    font-weight: 500;
+    color: #4459a2;
+    
+}
+
+.skillBoxContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 0.33rem;
+    align-items: left;
+}
+
+
+.skillListContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 0.33rem;
+    flex-wrap: wrap;
+    align-items: center;
+
+}
+
+.skill{
+    background-color: #4459a2;
+    border-radius: 0.5rem;
+    width: max-content;
+    padding: 0.25rem;
+    color: white;
+    font-size: smaller;
+}
