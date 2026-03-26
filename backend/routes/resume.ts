@@ -13,7 +13,7 @@ router.post("/generate", async function (req, res, next) {
     const resume = await generateResumeFromJobDescription(jobDescription);
 
     res.json({ resume });
-  } catch (error) {
+  } catch (error: any) {
     console.error("AI Generation Error:", error);
 
     // 2. Send a JSON error back to the frontend instead of HTML

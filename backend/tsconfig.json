@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    // File routing
+    "rootDir": "./",
+    "outDir": "./dist",
+
+    // Strict typing
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // Useful for Express error handling
+    "noImplicitAny": false
+  },
+  "include": ["app.ts", "routes/**/*", "services/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

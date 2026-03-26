@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "tsx watch app.ts",
+    "build": "tsc"
   },
   "dependencies": {
     "@google/genai": "^1.46.0",
@@ -16,6 +17,12 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
-    "openai": "^6.33.0"
+    "openai": "^6.33.0",
+    "recruiters-utils": "file:../utils",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6"
   }
 }
