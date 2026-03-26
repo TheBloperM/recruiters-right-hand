@@ -1,5 +1,5 @@
 import "./App.css";
-import ResumeGenerator from "./ResumeGenerator";
+import ResumeGenerator from "./components/ResumeGenerator";
 
 function App() {
   return (

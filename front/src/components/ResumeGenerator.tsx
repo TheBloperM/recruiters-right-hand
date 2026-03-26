@@ -1,9 +1,12 @@
 import { useState, type SubmitEvent } from "react";
+import { useFormStatus } from "react-dom";
+import type { Resume } from "recruiters-utils";
 
 export default function ResumeGenerator() {
   const [jobDescription, setJobDescription] = useState("");
-  const [resume, setResume] = useState("");
-  console.log(jobDescription);
+  const [resume, setResume] = useState<Resume>();
+  const { pending } = useFormStatus();
+
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -28,6 +31,7 @@ export default function ResumeGenerator() {
       console.log(err);
     }
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <label>
@@ -42,7 +46,7 @@ export default function ResumeGenerator() {
         Generate Resume
       </button>
 
-      {resume}
+      {pending ? "currently pending please wait" : JSON.stringify(resume)}
     </form>
   );
 }
