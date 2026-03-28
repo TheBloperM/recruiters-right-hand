@@ -17,12 +17,15 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
+    "multer": "^2.1.1",
     "openai": "^6.33.0",
+    "pdf-parse": "^2.4.5",
     "recruiters-utils": "file:../utils",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6"
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.1.0"
   }
 }
