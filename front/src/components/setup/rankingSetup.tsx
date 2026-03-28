@@ -3,7 +3,7 @@ import SetupForm from "./setupForm/setupForm";
 import type { LeaderboardEntry } from "recruiters-utils";
 
 export function RankingSetup() {
-  const { setLeaderboard } = useAppStore();
+  const setLeaderboard = useAppStore((state) => state.setLeaderboard);
 
   const submitResumesForRanking = async (
     texts: string[],
@@ -14,7 +14,7 @@ export function RankingSetup() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         jobDescription,
-        resume: texts,
+        resumes: texts,
       }),
     });
 
@@ -25,6 +25,7 @@ export function RankingSetup() {
   const onResumesSuccessfulyRanked = (response: {
     leaderboard: LeaderboardEntry[];
   }) => {
+    console.log("Received leaderboard from backend:", response.leaderboard);
     setLeaderboard(response.leaderboard);
   };
   const title = "Rank Your Resumes";

@@ -1,0 +1,27 @@
+export const leaderboardSchema = {
+  type: "object",
+  properties: {
+    candidateName: { type: "string" },
+    score: { type: "number" },
+    summary: { type: "string" },
+    scoreReasoning: { type: "string" },
+    keySkills: { type: "array", items: { type: "string" } },
+    keyGaps: { type: "array", items: { type: "string" } },
+    isSeniorityMatching: { type: "boolean" },
+    isEducationMatcing: { type: "boolean" },
+    isLocationAccessibleToWorkplace: { type: "boolean" },
+    approximateSalaryMatch: { type: "boolean" },
+  },
+  required: [
+    "candidateName",
+    "score",
+    "summary",
+    "scoreReasoning",
+    "keySkills",
+    "keyGaps",
+    "isSeniorityMatching",
+    "isEducationMatcing",
+    "isLocationAccessibleToWorkplace",
+    "approximateSalaryMatch",
+  ],
+};

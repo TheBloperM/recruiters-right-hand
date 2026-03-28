@@ -3,7 +3,7 @@ import { useAppStore } from "../../store";
 import { Toaster } from "react-hot-toast";
 import style from "./layout.module.css";
 import { useReactToPrint } from "react-to-print";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import ToolbarStep from "./toolbarStep/toolbarStep";
 import { useShallow } from "zustand/shallow";
 import { NAVIGATION_CONFIG } from "@/utils/navigationUtils";
@@ -13,14 +13,28 @@ import { FaChevronDown } from "react-icons/fa";
 export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { resumeName, setViewMode, viewMode } = useAppStore(
+  const { resumeName, setViewMode, viewMode, hasLeaderboard } = useAppStore(
     useShallow((state) => ({
       resumeName: state.resume?.name,
+      hasLeaderboard: !!state.leaderboard?.length,
       viewMode: state.viewMode,
       setViewMode: state.setViewMode,
     })),
   );
   const printTargetRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const isRecruiterPath =
+      location.pathname.includes("recruiter") ||
+      location.pathname.includes("leaderboard");
+    const expectedMode = isRecruiterPath
+      ? ViewMode.Recruiter
+      : ViewMode.Candidate;
+
+    if (viewMode !== expectedMode) {
+      setViewMode(expectedMode);
+    }
+  }, [location.pathname, viewMode, setViewMode]);
 
   const handleExport = useReactToPrint({
     contentRef: printTargetRef,
@@ -52,9 +66,10 @@ export default function Layout() {
               id="mode-select"
               value={viewMode}
               className={style.selectViewMode}
+              defaultValue={viewMode}
               onChange={(e) => {
                 setViewMode(e.target.value as "Candidate" | "Recruiter");
-                navigate(`${e.target.value.toLocaleLowerCase()}`);
+                navigate(`/${e.target.value.toLocaleLowerCase()}`);
               }}
             >
               {Object.values(ViewMode).map((mode) => (
@@ -77,7 +92,9 @@ export default function Layout() {
               currentPath={location.pathname}
               onExportClick={step.isExport ? onExportClick : undefined}
               showDivider={index < NAVIGATION_CONFIG[viewMode].length - 1}
-              isNextStepReady={!!resumeName}
+              isNextStepReady={
+                viewMode === ViewMode.Candidate ? !!resumeName : hasLeaderboard
+              }
             />
           ))}
         </div>

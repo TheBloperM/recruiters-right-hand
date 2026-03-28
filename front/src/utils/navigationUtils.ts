@@ -29,7 +29,7 @@ export const NAVIGATION_CONFIG: Record<ViewModeType, NavigationStep[]> = {
     {
       label: "Candidate Ranking",
       path: "/leaderboard",
-      isDisabled: (state) => !state.leaderboard?.length,
+      isDisabled: (state) => !state,
     },
   ],
 };

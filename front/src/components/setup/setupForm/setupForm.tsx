@@ -24,21 +24,35 @@ export default function SetupFormUI<T>(props: SetupFormUIProps<T>) {
     }
   }, [jobDescription]);
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const addFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFiles(Array.from(e.target.files));
+      const newFiles = Array.from(e.target.files);
+
+      setFiles((prev) => {
+        if (!props.allowMultiple) return [newFiles[0]];
+
+        const combined = [...prev, ...newFiles];
+
+        return combined.filter(
+          (file, index, self) =>
+            index ===
+            self.findIndex((f) => f.name === file.name && f.size === file.size),
+        );
+      });
     }
+  };
+
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleInternalSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const parsingPipeline = async () => {
-      // 1. Prepare Multipart Form Data
       const formData = new FormData();
       files.forEach((file) => formData.append("resumeFiles", file));
 
-      // 2. Generic Parsing Call (Both personas need this)
       const parseRes = await fetch("http://localhost:3000/file/parse", {
         method: "POST",
         body: formData,
@@ -47,12 +61,10 @@ export default function SetupFormUI<T>(props: SetupFormUIProps<T>) {
       if (!parseRes.ok) throw new Error("Failed to extract text from PDF(s)");
       const { resumes } = await parseRes.json();
 
-      // Map the response into a simple array of strings
       const extractedTexts = resumes.map(
         (response: { text: string }) => response.text,
       );
 
-      // 3. Hand off the clean data to the parent's specific AI logic
       return await props.onSubmit(extractedTexts, jobDescription);
     };
 
@@ -68,12 +80,14 @@ export default function SetupFormUI<T>(props: SetupFormUIProps<T>) {
       .catch(console.error);
   };
 
-  const showcaseFiles = () => {
-    if (files.length === 0) return "Drop PDF(s) here or click to browse";
+  const showFilesButtonText = () => {
+    if (files.length === 0)
+      return "Click to upload or drag and drop your PDF(s) here";
     if (files.length === 1) return files[0].name;
 
-    return files.map((f) => f.name).join(", ");
+    return `${files.length} files selected`;
   };
+
   return (
     <form
       onSubmit={handleInternalSubmit}
@@ -89,15 +103,33 @@ export default function SetupFormUI<T>(props: SetupFormUIProps<T>) {
           type="file"
           multiple={props.allowMultiple}
           accept=".pdf"
-          onChange={handleFileChange}
+          onChange={addFile}
           className={style.hiddenFileInput}
         />
         <div className={style.dropzoneContent}>
           <span className={style.uploadIcon}>
             {props.allowMultiple ? "📚" : "📄"}
           </span>
-          <p className={style.dropzoneText}>{showcaseFiles()}</p>
+          <p className={style.dropzoneText}>{showFilesButtonText()}</p>
         </div>
+      </div>
+
+      <div className={style.fileList}>
+        {files.map((file, index) => (
+          <div key={`${file.name}-${index}`} className={style.fileTag}>
+            <span className={style.fileName}>{file.name}</span>
+            <button
+              type="button"
+              className={style.removeBtn}
+              onClick={(e) => {
+                e.stopPropagation();
+                removeFile(index);
+              }}
+            >
+              ×
+            </button>
+          </div>
+        ))}
       </div>
 
       <label className={style.label}>
