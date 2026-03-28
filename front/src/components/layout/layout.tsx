@@ -52,9 +52,10 @@ export default function Layout() {
               id="mode-select"
               value={viewMode}
               className={style.selectViewMode}
-              onChange={(e) =>
-                setViewMode(e.target.value as "Candidate" | "Recruiter")
-              }
+              onChange={(e) => {
+                setViewMode(e.target.value as "Candidate" | "Recruiter");
+                navigate(`${e.target.value.toLocaleLowerCase()}`);
+              }}
             >
               {Object.values(ViewMode).map((mode) => (
                 <option key={mode} value={mode}>

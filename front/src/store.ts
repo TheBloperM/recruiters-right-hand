@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Resume } from "recruiters-utils";
+import type { LeaderboardEntry, Resume } from "recruiters-utils";
 import { ViewMode, type ViewModeType } from "./types/viewMode";
 
 export interface AppStore {
@@ -7,6 +7,8 @@ export interface AppStore {
   setResume: (data: Resume) => void;
   viewMode: ViewModeType;
   setViewMode: (mode: ViewModeType) => void;
+  leaderboard: LeaderboardEntry[] | null;
+  setLeaderboard: (data: LeaderboardEntry[]) => void;
 }
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -14,4 +16,6 @@ export const useAppStore = create<AppStore>((set) => ({
   setResume: (data) => set({ resume: data }),
   viewMode: ViewMode.Candidate,
   setViewMode: (mode) => set({ viewMode: mode }),
+  leaderboard: null,
+  setLeaderboard: (data) => set({ leaderboard: data }),
 }));

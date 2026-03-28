@@ -5,7 +5,7 @@ export const NAVIGATION_CONFIG: Record<ViewModeType, NavigationStep[]> = {
   [ViewMode.Candidate]: [
     {
       label: "Upload & Setup",
-      path: "/",
+      path: "/candidate",
       isDisabled: () => false,
     },
     {
@@ -23,7 +23,7 @@ export const NAVIGATION_CONFIG: Record<ViewModeType, NavigationStep[]> = {
   [ViewMode.Recruiter]: [
     {
       label: "Job & Batch Upload",
-      path: "/",
+      path: "/recruiter",
       isDisabled: () => false,
     },
     {
