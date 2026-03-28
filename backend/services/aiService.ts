@@ -110,13 +110,13 @@ const resumeSchema = {
         type: Type.OBJECT,
         properties: {
           workPlace: { type: Type.STRING },
+          industry: { type: Type.STRING },
           jobsData: {
             type: Type.ARRAY,
             items: {
               type: Type.OBJECT,
               properties: {
                 title: { type: Type.STRING },
-                industry: { type: Type.STRING },
                 startDate: { type: Type.STRING, description: "e.g., Jan 2020" },
                 endDate: {
                   type: Type.STRING,
@@ -152,36 +152,6 @@ const resumeSchema = {
     "education",
     "experience",
   ],
-};
-
-export const generateResumeFromJobDescription = async (
-  jobDescription: string,
-): Promise<Resume> => {
-  try {
-    const recruiterPrompt = `Act as an elite Executive Recruiter. I will provide a job description below. Reverse-engineer this description and generate a highly detailed resume for the ideal "unicorn" candidate who perfectly matches the role.
-
-    CRITICAL INSTRUCTIONS:
-    1. Quantifiable Achievements: Inside the 'comments' array of jobsData, use strong action verbs and realistic, quantifiable metrics (percentages, revenue, time saved).
-    2. Career Progression: Fabricate a logical career trajectory over the last 7-10 years.
-    3. Links: Fabricate realistic URLs for GitHub, Portfolio, and LinkedIn based on the generated name.
-
-    Job Description: 
-    ${jobDescription}`;
-
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: recruiterPrompt,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: resumeSchema,
-      },
-    });
-
-    return JSON.parse(response.text!) as Resume;
-  } catch (error) {
-    console.error("Gemini API Error:", error);
-    throw new Error("Failed to generate resume from Google AI.");
-  }
 };
 
 export const tailorResumeForJobDescription = async (

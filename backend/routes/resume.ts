@@ -1,35 +1,11 @@
 import { Router } from "express";
-import {
-  generateResumeFromJobDescription,
-  tailorResumeForJobDescription,
-} from "../services/aiService.js";
+import { tailorResumeForJobDescription } from "../services/aiService.js";
 import multer from "multer";
 import { PDFParse } from "pdf-parse";
 import { ParsedResume } from "recruiters-utils";
 
 var router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
-
-router.post("/generate", async function (req, res, next) {
-  try {
-    const { jobDescription } = req.body;
-
-    if (!jobDescription) {
-      return res.status(400).json({ error: "jobDescription is required" });
-    }
-
-    const resume = await generateResumeFromJobDescription(jobDescription);
-
-    res.json({ resume });
-  } catch (error: any) {
-    console.error("AI Generation Error:", error);
-
-    res.status(error.status || 500).json({
-      error: "Failed to generate resume",
-      details: error.message,
-    });
-  }
-});
 
 router.post("/tailor", async function (req, res, next) {
   try {
