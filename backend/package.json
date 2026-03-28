@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "tsx watch app.ts",
+    "dev": "tsx watch app.ts",
     "build": "tsc"
   },
   "dependencies": {
