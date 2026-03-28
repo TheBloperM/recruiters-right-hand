@@ -1,49 +1,69 @@
-# 🛠 Technical Approach & Key Decisions
+# Technical Approach & Design Decisions
 
-This document outlines the architectural philosophy and strategic decisions made during the development of **Recruiter's Right Hand**.
+This document outlines the engineering philosophy, trade-offs, and architectural decisions made during the development of **Recruiter's Right Hand**.
 
----
+## Core Philosophy: Data Integrity in AI
 
-## 1. Monorepo Architecture (NPM Workspaces)
-
-**Decision:** Consolidate the Frontend, Backend, and shared logic into a single repository managed by NPM Workspaces.
-
-- **Why:** In full-stack TypeScript projects, the "Contract" (the data shape) between the API and the UI is the most common point of failure.
-- **Result:** By using a shared `packages/utils` library, we achieve **Universal Type Safety**. If the `Resume` interface changes in the utils package, both the React frontend and Express backend will fail to compile until the change is addressed. This eliminates "undefined" errors at runtime.
+The primary challenge of this application is balancing **AI creative power** with **factual accuracy**. Whether tailoring a single resume or ranking twenty, the system must translate unstructured PDF text into a highly structured React UI without "hallucinating" or inventing facts.
 
 ---
 
-## 2. Schema-First AI Integration
+## Section 1: Candidate Mode (Resume Tailoring)
 
-**Decision:** Moving beyond "string-based" prompting to **Structured Output Schemas** using the Gemini 2.5 Flash SDK.
+### 1.1 The Approach: "Deductive Translation"
 
-- **Why:** Traditional LLM prompting often returns malformed JSON or inconsistent keys, requiring complex "regex" cleaning.
-- **Result:** By passing a strict `responseSchema` (similar to a Zod or JSON schema) directly to the Google AI SDK, the model is physically constrained to return a valid object. This ensures the data perfectly fits our TypeScript interfaces every time, removing the need for backend "sanitization" logic.
+Instead of a simple "rewrite," I approached the problem as a **Semantic Mapping** task.
 
----
+- **Prompt Design:** The AI is instructed to act as a technical recruiter who bridges the gap between candidate terminology (e.g., "Express.js") and job description requirements (e.g., "Node.js").
+- **Result:** This maximizes ATS match scores while remaining 100% anchored in the candidate's actual history.
 
-## 3. "Deductive Translation" Prompt Engineering
+### 1.2 Decisions & Trade-offs: Document Generation
 
-**Decision:** Implementing a prompt strategy that focuses on semantic mapping rather than simple rewriting.
+- **Decision:** I utilized `react-to-print` to leverage the browser's native print engine instead of server-side PDF generation (like Puppeteer).
+- **Trade-off:** Server-side generation offers more control but is resource-heavy and slow.
+- **Result:** By using the browser engine, the exported PDF remains **text-selectable**, ensuring it is readable by Applicant Tracking Systems (ATS) while maintaining high performance.
 
-- **Why:** Many candidates have the skills a job requires but use different terminology (e.g., "Express.js" vs. "Node.js").
-- **Result:** The AI is instructed to perform **Deductive Translation**. It identifies the core competencies in the original resume and translates them into the specific vocabulary of the Job Description. This maximizes "ATS Match Scores" without hallucinating fake experience.
+### 1.3 Design: Frontend Flow
 
----
-
-## 4. ATS-Friendly Document Generation
-
-**Decision:** Prioritizing "Text-Selectable" PDFs over "Image-Based" PDF snapshots.
-
-- **Why:** Many React-to-PDF libraries take a "screenshot" of the HTML. This creates an image-based PDF that Applicant Tracking Systems (ATS) cannot read, leading to automatic rejection.
-- **Result:** We utilized `react-to-print` to leverage the browser's native print engine. This ensures the exported PDF contains **raw text metadata**, allowing recruiter software to highlight, search, and parse the candidate's information perfectly.
+- The flow is designed as a **Linear Multi-Step State Machine** managed by Zustand.
+- This ensures a clean separation between data input (PDF upload) and the complex, interactive resume output.
 
 ---
 
-## 5. Pragmatic "Decoupled Monolith" Backend
+## Section 2: Recruiter Mode (Candidate Ranking)
 
-**Decision:** Choosing a unified Express server (Monolith) over a Microservices architecture.
+### 2.1 The Approach: Objective Batch Evaluation
 
-- **Why:** Microservices introduce significant networking overhead, deployment costs, and "distributed monolith" complexity that is unnecessary for a focused tool.
-- **Result:** We maintained a single, highly-organized Express backend. This keeps the application "lean," easy to deploy on a single container, and significantly faster to debug while still maintaining a clean separation between the "Parsing" and "Tailoring" services.
-- **Scalability Note:** This architecture is designed to be Microservice-Ready. Should the application scale to a high volume of concurrent users, the existing service boundaries (PDF Parsing, AI Processing, and Exporting) are decoupled enough to be easily extracted into independent, auto-scaling microservices (e.g., using AWS Lambda or Kubernetes) without requiring a full rewrite of the core logic.
+Processing multiple candidates requires a shift from "creative tailoring" to **analytical evaluation**.
+
+- **Parallel Processing:** The backend uses `Promise.all` during the file parsing stage to handle multiple PDFs concurrently, significantly reducing the bottleneck for the end-user.
+
+### 2.2 Decisions & Trade-offs: Schema Enforcement
+
+- **Decision:** I strictly enforced Gemini's `responseSchema` at the SDK level rather than using raw string prompts.
+- **Trade-off:** This slightly increases the complexity of the initial schema definition.
+- **Result:** It eliminates the need for fragile "regex" cleaning of AI responses and ensures the UI can instantly render complex "Match Badges" and "Skill Gaps" without runtime errors.
+
+### 2.3 Design: Backend Implementation
+
+- The backend is a **Type-Safe Monolith**.
+- By converting the backend from JavaScript to TypeScript, we achieved a "Type Contract" between the AI service and the API routes.
+- Error handling was refactored to emit **JSON instead of HTML**, ensuring the React frontend can gracefully handle and display errors using `react-hot-toast`.
+
+---
+
+## Global Architectural Decisions
+
+### 1. Monorepo & Universal Type Safety
+
+- **Decision:** Consolidating Frontend, Backend, and shared logic into a single repository using NPM Workspaces.
+- **Reasoning:** Sharing the `recruiters-utils` package ensures that a change to the `Resume` or `LeaderboardEntry` interface in one area immediately updates the entire stack.
+
+### 2. CSS Architecture & Performance
+
+- **Decision:** Replaced hardcoded styles with a centralized **CSS Variable System** and used Zustand's `useShallow` for state subscriptions.
+- **Reasoning:** Standardizing on variables like `--blue` and `--text-main` ensures a unified brand identity. Using `useShallow` prevents massive components from re-rendering unnecessarily, maintaining a 60fps experience even with complex resume layouts.
+
+---
+
+**Would you like me to add a "Future Roadmap" section to this document detailing how we might scale the PDF parsing or AI model choice?**
