@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
-import { useResumeStore } from "@/store";
+import { useAppStore } from "@/store";
 import toast from "react-hot-toast";
 import classNames from "classnames";
 import style from "./setupResume.module.css";
 
 export default function SetupResume() {
   const [jobDescription, setJobDescription] = useState("");
-  const { setResume } = useResumeStore();
+  const { setResume } = useAppStore();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
 

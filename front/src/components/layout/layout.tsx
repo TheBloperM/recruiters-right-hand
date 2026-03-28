@@ -1,5 +1,5 @@
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import { useResumeStore } from "../../store";
+import { useAppStore } from "../../store";
 import { Toaster } from "react-hot-toast";
 import style from "./layout.module.css";
 import classNames from "classnames";
@@ -9,7 +9,7 @@ import { useRef } from "react";
 export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { resume } = useResumeStore();
+  const { resume } = useAppStore();
   const printTargetRef = useRef<HTMLElement | null>(null);
 
   const handleExport = useReactToPrint({
