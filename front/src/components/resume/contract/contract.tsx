@@ -9,7 +9,7 @@ interface ContractProps {
   contractData: ContractData;
 }
 
-export default function Contract(props: ContractProps) {
+export default function Contract({ contractData }: ContractProps) {
   const size = "1.5rem";
   const color = "#4459a2";
 
@@ -27,22 +27,30 @@ export default function Contract(props: ContractProps) {
 
   return (
     <div className={style.container}>
-      {Object.keys(props.contractData).map((key) => {
-        const contractKey = key as keyof ContractData;
-        const { icon: Icon, linkPrefix } = keyToIcon[contractKey];
-        let value: string | ReactNode = props.contractData[contractKey];
+      {(Object.keys(contractData) as Array<keyof ContractData>).map((key) => {
+        const rawValue = contractData[key];
+
+        if (!rawValue) return null;
+
+        const { icon: Icon, linkPrefix } = keyToIcon[key];
+        let displayValue: ReactNode = rawValue;
 
         if (linkPrefix) {
-          value = (
-            <a href={`${linkPrefix}${value}`} target="_blank">
-              {value}
+          displayValue = (
+            <a
+              href={`${linkPrefix}${rawValue}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {rawValue}
             </a>
           );
         }
+
         return (
           <div className={style.infoSet} key={key}>
             <Icon size={size} color={color} />
-            {value}
+            {displayValue}
           </div>
         );
       })}

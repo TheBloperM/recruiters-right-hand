@@ -6,11 +6,11 @@ interface TitleProps {
   description: Resume["description"];
 }
 
-export function Title(props: TitleProps) {
+export function Title({ name, description }: TitleProps) {
   return (
     <div className={style.container}>
-      <div className={style.name}>{props.name}</div>
-      <div className={style.title}>{props.description}</div>
+      <div className={style.name}>{name}</div>
+      <div className={style.title}>{description}</div>
     </div>
   );
 }

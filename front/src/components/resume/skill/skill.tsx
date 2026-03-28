@@ -7,34 +7,37 @@ interface SkillProps {
   skills: SkillsAndTechnologies;
 }
 
-export function SkillsAndTechnlogies(props: SkillProps) {
+export function SkillsAndTechnlogies({ skills }: SkillProps) {
   return (
     <div className={style.container}>
       <SectionTitle text="Skills and Technologies" />
 
-      {Object.keys(props.skills).map((key) => {
-        const skillKey = key as keyof SkillsAndTechnologies;
-        const skills = props.skills[skillKey];
+      {(Object.keys(skills) as Array<keyof SkillsAndTechnologies>).map(
+        (skillKey) => {
+          const skillList = skills[skillKey];
 
-        return (
-          <div className={style.skillBoxContainer} key={key}>
-            <span className={style.subTitle}>
-              {camelToTitleCase(skillKey)} -
-            </span>
+          if (!skillList || skillList.length === 0) return null;
 
-            <div className={style.skillListContainer}>
-              {skills.map((skill) => (
-                <div
-                  className={style.skill}
-                  key={`${skill.name} (${skill.level})`}
-                >
-                  {`${skill.name} (${skill.level})`}
-                </div>
-              ))}
+          return (
+            <div className={style.skillBoxContainer} key={skillKey}>
+              <span className={style.subTitle}>
+                {camelToTitleCase(skillKey)} -
+              </span>
+
+              <div className={style.skillListContainer}>
+                {skillList.map((skill) => (
+                  <div
+                    className={style.skill}
+                    key={`${skill.name}-${skill.level}`}
+                  >
+                    {skill.name} ({skill.level})
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        },
+      )}
     </div>
   );
 }
