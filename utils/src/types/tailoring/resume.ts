@@ -1,4 +1,3 @@
-import type { Certification } from "./certification.js";
 import type { ContractData } from "./contractData.js";
 import type { EducationData } from "./educationData.js";
 import type { ProfessionalExperience } from "./professionalExperience.js";
@@ -13,5 +12,4 @@ export interface Resume {
   interests: string[];
   education: EducationData[];
   experience: ProfessionalExperience[];
-  certifications: Certification[];
 }
