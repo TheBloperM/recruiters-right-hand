@@ -6,6 +6,7 @@
 
     // Environment Settings
     "module": "nodenext",
+    "moduleResolution": "nodenext",
     "target": "esnext",
 
     // Other Outputs
@@ -24,7 +25,9 @@
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "composite": true, // Allows other projects to reference this one
+    "incremental": true // Speeds up sub-sequential builds
   },
   "include": ["src/**/*"]
 }

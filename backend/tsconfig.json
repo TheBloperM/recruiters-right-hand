@@ -15,7 +15,11 @@
     "forceConsistentCasingInFileNames": true,
 
     // Useful for Express error handling
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "baseUrl": ".",
+    "paths": {
+      "recruiters-utils": ["../recruiters-utils/src/index.ts"]
+    }
   },
   "include": ["app.ts", "routes/**/*", "services/**/*"],
   "exclude": ["node_modules", "dist"]
