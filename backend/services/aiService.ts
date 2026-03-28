@@ -1,9 +1,8 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { Resume } from "recruiters-utils"; // <-- 1. Import your shared type!
+import { Resume } from "recruiters-utils";
 
 const ai = new GoogleGenAI({});
 
-// 2. The Gemini Runtime Schema (Keep this exactly as is)
 const skillSchema = {
   type: Type.OBJECT,
   properties: {
@@ -37,21 +36,27 @@ const resumeSchema = {
         linkedin: {
           type: Type.STRING,
           description:
-            "shorted LinkedIn URL based on the generated name, e.g., linkedin.com/in/john-doe",
+            "if given linkedIn URL in the original resume, use it. If not, fabricate a realistic LinkedIn URL based on the candidate's name (e.g., linkedin.com/in/john-doe).",
         },
         email: {
           type: Type.STRING,
-          description: "mock email address used for job applications",
+          description:
+            "if given email in the original resume, use it. If not, fabricate a realistic email address based on the candidate's name (e.g., john.doe@example.com).",
         },
         protofolio: {
           type: Type.STRING,
-          description: "shortened mock portfolio URL",
+          description:
+            "if given portfolio URL in the original resume, use it. If not, fabricate a realistic portfolio URL based on the candidate's name (e.g., johndoe.dev).",
         },
-        github: { type: Type.STRING, description: "Realistic mock GitHub URL" },
+        github: {
+          type: Type.STRING,
+          description:
+            "if given GitHub URL in the original resume, use it. If not, fabricate a realistic GitHub URL based on the candidate's name (e.g., github.com/johndoe).",
+        },
         phoneNumber: {
           type: Type.STRING,
           description:
-            "mock phone number formatted as (XXX) XXX-XXXX, used for job applications",
+            "if given phone number in the original resume, use it. If not, fabricate a realistic phone number formatted as (XXX) XXX-XXXX, used for job applications",
         },
         address: { type: Type.STRING, description: "city and country" },
       },
@@ -149,7 +154,6 @@ const resumeSchema = {
   ],
 };
 
-// 3. Strongly type the function signature and the return value
 export const generateResumeFromJobDescription = async (
   jobDescription: string,
 ): Promise<Resume> => {
@@ -173,10 +177,68 @@ export const generateResumeFromJobDescription = async (
       },
     });
 
-    // 4. Cast the parsed JSON as your Resume interface
     return JSON.parse(response.text!) as Resume;
   } catch (error) {
     console.error("Gemini API Error:", error);
     throw new Error("Failed to generate resume from Google AI.");
   }
+};
+
+export const tailorResumeForJobDescription = async (
+  resume: string,
+  jobDescription: string,
+): Promise<Resume> => {
+  const tailoringPrompt = `
+You are an elite ATS (Applicant Tracking System) optimizer and technical recruiter. 
+Your singular task is to rewrite a candidate's Original Resume to perfectly align with a target Job Description.
+
+CRITICAL DIRECTIVES:
+
+1. ABSOLUTE FACTUALITY (ZERO HALLUCINATION): 
+You are strictly forbidden from inventing jobs, degrees, metrics, responsibilities, or years of experience. Do not add skills the candidate does not actually possess. Your modifications must be anchored entirely in the provided resume.
+
+2. DEDUCTIVE TRANSLATION (HEAVILY IMPLIED CONTEXT): 
+You must translate the candidate's existing experience into the exact vocabulary used in the Job Description, provided the original resume heavily implies it or it can be easily assumed by an industry expert.
+- Example: If the resume states "Built a backend server using Express" and the JD asks for "Node.js development", you must rewrite the bullet point to include "Node.js".
+
+3. KEYWORD WEAVING: 
+Identify the mandatory keywords (tools, frameworks, methodologies) from the Job Description. Naturally weave these exact keywords into the resume's summary, skills section, and experience bullets wherever the candidate's historical context logically supports it.
+
+4. STRATEGIC REORDERING & EMPHASIS: 
+Analyze the core priorities of the Job Description. Rewrite the professional summary to highlight the candidate's most relevant traits. Reorder the bullet points under each job so the accomplishments that best match the JD appear at the very top.
+
+5. NOISE REDUCTION (RUTHLESS PRUNING):
+If the candidate has bullet points, skills, or past roles that are completely irrelevant to the target Job Description, ruthlessly condense or de-emphasize them. Your goal is a high signal-to-noise ratio. The recruiter should only see what matters for this specific role.
+
+6. IMPACT & ACTION FORMATTING (STAR METHOD):
+Ensure every bullet point begins with a strong, active-voice verb (e.g., "Architected", "Spearheaded", "Optimized" instead of "Responsible for" or "Helped with"). Preserve and highlight ALL existing metrics, percentages, or concrete numbers from the original resume, framing them as the direct result of the candidate's actions.
+
+7. SENIORITY ALIGNMENT:
+Adjust the tone of the accomplishments to match the seniority level of the JD. 
+- If the JD is a Senior/Lead role, frame the existing experience around architecture, system design, mentoring, and ownership.
+- If the JD is a Mid-level role, focus on execution, delivering features, and technical proficiency.
+
+--- INPUT DATA ---
+
+TARGET JOB DESCRIPTION:
+"""
+${jobDescription}
+"""
+
+ORIGINAL RESUME TEXT:
+"""
+${resume}
+"""
+`;
+
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: tailoringPrompt,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: resumeSchema,
+    },
+  });
+
+  return JSON.parse(response.text!) as Resume;
 };

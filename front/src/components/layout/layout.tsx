@@ -1,17 +1,28 @@
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useResumeStore } from "../../store";
-import { useShallow } from "zustand/shallow";
 import { Toaster } from "react-hot-toast";
 import style from "./layout.module.css";
 import classNames from "classnames";
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
 
 export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { hasResume } = useResumeStore(
-    useShallow((state) => ({ hasResume: !!state.resume })),
-  );
+  const { resume } = useResumeStore();
+  const printTargetRef = useRef<HTMLElement | null>(null);
 
+  const handleExport = useReactToPrint({
+    contentRef: printTargetRef,
+    documentTitle: resume
+      ? `${resume.name.replace(/\s+/g, "_")}_Resume`
+      : "Tailored_Resume",
+  });
+
+  const onExportClick = () => {
+    printTargetRef.current = document.getElementById("resume-print-target");
+    handleExport();
+  };
   return (
     <div className={style.appContainer}>
       <Toaster position="top-right" toastOptions={{ duration: 7000 }} />
@@ -23,7 +34,6 @@ export default function Layout() {
         <div className={style.toolbarStepper}>
           <button
             onClick={() => navigate("/")}
-            // Dynamic class combining stepBtn and potentially active
             className={classNames(style.stepBtn, {
               [style.active]: location.pathname === "/",
             })}
@@ -35,18 +45,28 @@ export default function Layout() {
 
           <button
             onClick={() => navigate("/output")}
-            disabled={!hasResume}
+            disabled={!resume}
             className={classNames(style.stepBtn, {
               [style.active]: location.pathname === "/output",
             })}
           >
             <span className={style.stepNum}>2</span> Tailored Output
           </button>
+
+          <span className={style.stepDivider}></span>
+
+          <button
+            onClick={onExportClick}
+            disabled={location.pathname !== "/output"}
+            className={classNames(style.stepBtn, {
+              [style.exportBtn]: location.pathname === "/output",
+            })}
+          >
+            <span className={style.stepNum}>3</span> Export PDF
+          </button>
         </div>
 
-        <div className={style.toolbarActions}>
-          {/* Perfect spot for the Print button later! */}
-        </div>
+        <div className={style.toolbarActions}></div>
       </nav>
 
       <main>

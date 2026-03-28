@@ -1,11 +1,4 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ChangeEvent,
-  type SubmitEvent,
-} from "react";
-import type { Resume } from "recruiters-utils";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useResumeStore } from "@/store";
 import toast from "react-hot-toast";
 import classNames from "classnames";
@@ -15,7 +8,7 @@ export default function SetupResume() {
   const [jobDescription, setJobDescription] = useState("");
   const { setResume } = useResumeStore();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [resumeFile, setResumeFile] = useState<File | null>(null); // 1. New File State
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -32,33 +25,44 @@ export default function SetupResume() {
     }
   };
 
-  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const processResumePipeline = async () => {
+      const formData = new FormData();
+      formData.append("resumeFiles", resumeFile as Blob);
 
-    try {
-      const generateAIResume = async () => {
-        const response = await fetch("http://localhost:3000/resume/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ jobDescription }),
-        });
+      const parseRes = await fetch("http://localhost:3000/resume/parse", {
+        method: "POST",
+        body: formData,
+      });
 
-        if (!response.ok) throw new Error("Network response was not ok");
-        return response.json();
-      };
+      if (!parseRes.ok) throw new Error("Failed to extract text from PDF");
+      const parseData = await parseRes.json();
+      const extractedText = parseData.resumes[0].text;
 
-      toast
-        .promise(generateAIResume(), {
-          loading: "Generating resume...",
-          success: "Resume generated!",
-          error: "Failed to generate resume",
-        })
-        .then((response) => {
-          setResume(response.resume as Resume);
-        });
-    } catch (err) {
-      console.log(err);
-    }
+      const tailorRes = await fetch("http://localhost:3000/resume/tailor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jobDescription,
+          resume: extractedText,
+        }),
+      });
+
+      if (!tailorRes.ok) throw new Error("Failed to tailor resume via AI");
+      return tailorRes.json();
+    };
+
+    toast
+      .promise(processResumePipeline(), {
+        loading: "Tailoring your resume! This may take a moment...",
+        success: "Resume perfectly tailored!",
+        error: (err) => err.message || "Something went wrong.",
+      })
+      .then((response) => {
+        setResume(response.resume);
+      })
+      .catch(console.error);
   };
 
   return (
@@ -76,7 +80,6 @@ export default function SetupResume() {
       </div>
 
       <div className={style.dropzoneWrapper}>
-        {/* The actual input is stretched and invisible over this whole box */}
         <input
           type="file"
           accept=".pdf"
@@ -84,7 +87,6 @@ export default function SetupResume() {
           className={style.hiddenFileInput}
         />
 
-        {/* This is what the user actually sees */}
         <div className={style.dropzoneContent}>
           <span className={style.uploadIcon}>📄</span>
           <p className={style.dropzoneText}>

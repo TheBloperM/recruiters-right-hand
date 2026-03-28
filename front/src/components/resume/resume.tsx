@@ -13,7 +13,7 @@ export default function ResumeComponent() {
   return (
     <>
       {resume && (
-        <div className={style.pageWrapper}>
+        <div className={style.pageWrapper} id="resume-print-target">
           <Title
             name={`${resume.name} - ${resume.professionalTitle}`}
             description={resume.description}

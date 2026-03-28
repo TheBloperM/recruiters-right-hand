@@ -44,7 +44,6 @@
   box-shadow: 0 0 0 3px rgba(68, 89, 162, 0.15); 
 }
 
-/* The action button */
 .submitButton {
   background-color: #4459a2;
   color: white;
@@ -98,7 +97,6 @@
   margin-bottom: 0.5rem; 
 }
 
-/* The visual box with the dashed border */
 .dropzoneWrapper {
   position: relative;
   width: 100%;
@@ -110,35 +108,33 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  overflow: hidden; /* Keeps the invisible input from bleeding out */
+  overflow: hidden; 
   margin-top: 0.5rem;
 }
 
-/* Add a nice blue hover effect when they drag over it */
 .dropzoneWrapper:hover {
   border-color: #4459a2;
-  background-color: #f0f4f8; /* Very faint blue tint */
+  background-color: #f0f4f8; 
 }
 
-/* THE CSS HACK: Stretches the input and makes it invisible */
 .hiddenFileInput {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0; /* Invisible! */
+  opacity: 0; 
   cursor: pointer;
-  z-index: 10; /* Ensures it sits on top of the text */
+  z-index: 10; 
 }
 
-/* Centers the icon and text inside the box */
+
 .dropzoneContent {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  pointer-events: none; /* Prevents text from blocking clicks to the input */
+  pointer-events: none;
 }
 
 .uploadIcon {
@@ -153,7 +149,7 @@
   margin: 0;
 }
 
-/* Highlights the text when a file is successfully attached */
+
 .fileName {
   color: #4459a2;
   font-weight: 600;
