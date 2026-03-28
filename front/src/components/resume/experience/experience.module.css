@@ -11,10 +11,6 @@
   gap: 1rem;
 }
 
-.itemFlexGap {
-  gap: 0.25rem;
-}
-
 .jobTitle {
   color: #4459a2;
   font-size: large;
@@ -26,13 +22,3 @@
   font-weight: 500;
 }
 
-.years {
-  font-style: italic;
-  color: #4459a2;
-  font-size: smaller;
-  font-weight: 500;
-}
-
-.comments {
-  font-size: smaller;
-}

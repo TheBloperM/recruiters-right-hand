@@ -1,0 +1,14 @@
+.years {
+  font-style: italic;
+  color: #4459a2;
+  font-size: smaller;
+  font-weight: 500;
+}
+
+.comments {
+  font-size: smaller;
+}
+
+.itemFlexGap {
+  gap: 0.25rem;
+}

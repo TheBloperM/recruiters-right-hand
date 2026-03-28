@@ -2,6 +2,7 @@ import classNames from "classnames";
 import style from "./experience.module.css";
 import type { ProfessionalExperience } from "recruiters-utils";
 import SectionTitle from "../sectionTitle/sectionTitle";
+import JobRole from "./jobRole/jobRole";
 
 interface ExperienceProps {
   experience: ProfessionalExperience[];
@@ -17,23 +18,8 @@ export default function Experience(props: ExperienceProps) {
           <>
             <div className={style.jobLocation}>{workPlace}</div>
             <div className={style.jobTitle}>{industry}</div>
-            {jobsData.map(({ title, startDate, endDate, comments }) => (
-              <div
-                className={classNames(style.flex, style.itemFlexGap)}
-                key={`${workPlace}-${title}`}
-              >
-                <div className={style.jobTitle}>{title}</div>
-                <div className={style.years}>
-                  {startDate}-{endDate}
-                </div>
-                <div className={classNames(style.flex, style.itemFlexGap)}>
-                  {comments.map((comment, cindex) => (
-                    <div className={style.comments} key={`comment-${cindex}`}>
-                      - {comment}
-                    </div>
-                  ))}
-                </div>
-              </div>
+            {jobsData.map((jobRole) => (
+              <JobRole {...jobRole} workPlace={workPlace} />
             ))}
           </>
         ))}

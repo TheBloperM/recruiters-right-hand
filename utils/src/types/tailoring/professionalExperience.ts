@@ -4,7 +4,7 @@ export interface ProfessionalExperience {
   jobsData: JobData[];
 }
 
-interface JobData {
+export interface JobData {
   title: string;
   startDate: string;
   endDate: string;
