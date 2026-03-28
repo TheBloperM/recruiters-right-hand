@@ -24,10 +24,6 @@ import filesRouter from "./routes/file.js";
 const debug = debugLib("backend:server");
 const app: Express = express();
 
-// --- View Engine Setup ---
-app.set("views", join(import.meta.dirname, "views"));
-app.set("view engine", "jade");
-
 // --- Middleware ---
 app.use(logger("dev"));
 app.use(json());
@@ -47,10 +43,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-  res.status(err.status || 500);
-  res.render("error");
+  const isDev = req.app.get("env") === "development";
+  res.status(err.status || 500).json({
+    error: err.message || "Internal Server Error",
+    // Only leak stack traces and details in development
+    ...(isDev && { details: err }),
+  });
 });
 
 // --- Server Boot Logic (Combined from bin/www) ---

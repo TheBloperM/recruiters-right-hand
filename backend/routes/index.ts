@@ -1,8 +1,12 @@
-import { Router } from "express";
-var router = Router();
+import { Router, Request, Response } from "express";
+const router = Router();
 
-router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+router.get("/", (req: Request, res: Response) => {
+  res.json({
+    status: "ok",
+    message: "ATS Optimizer API is running",
+    timestamp: new Date().toISOString(),
+  });
 });
 
 export default router;

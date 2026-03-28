@@ -1,16 +1,18 @@
-export const leaderboardSchema = {
-  type: "object",
+import { Type, Schema } from "@google/genai";
+
+export const leaderboardSchema: Schema = {
+  type: Type.OBJECT,
   properties: {
-    candidateName: { type: "string" },
-    score: { type: "number" },
-    summary: { type: "string" },
-    scoreReasoning: { type: "string" },
-    keySkills: { type: "array", items: { type: "string" } },
-    keyGaps: { type: "array", items: { type: "string" } },
-    isSeniorityMatching: { type: "boolean" },
-    isEducationMatcing: { type: "boolean" },
-    isLocationAccessibleToWorkplace: { type: "boolean" },
-    approximateSalaryMatch: { type: "boolean" },
+    candidateName: { type: Type.STRING },
+    score: { type: Type.NUMBER },
+    summary: { type: Type.STRING },
+    scoreReasoning: { type: Type.STRING },
+    keySkills: { type: Type.ARRAY, items: { type: Type.STRING } },
+    keyGaps: { type: Type.ARRAY, items: { type: Type.STRING } },
+    isSeniorityMatching: { type: Type.BOOLEAN },
+    isEducationMatcing: { type: Type.BOOLEAN },
+    isLocationAccessibleToWorkplace: { type: Type.BOOLEAN },
+    approximateSalaryMatch: { type: Type.BOOLEAN },
   },
   required: [
     "candidateName",
