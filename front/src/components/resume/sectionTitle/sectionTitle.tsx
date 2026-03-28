@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import style from "./componentTitle.module.css";
+import style from "./sectionTitle.module.css";
 
 interface SectionTitleProps {
   text: string;

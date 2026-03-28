@@ -1,6 +1,6 @@
 import type { SkillsAndTechnologies } from "recruiters-utils";
 import SectionTitle from "../sectionTitle/sectionTitle";
-import style from "./skillsAndTechnologies.module.css";
+import style from "./skill.module.css";
 
 interface SkillProps {
   skills: SkillsAndTechnologies;

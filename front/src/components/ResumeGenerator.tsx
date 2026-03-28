@@ -5,10 +5,11 @@ import { useResumeStore } from "../store";
 export default function ResumeGenerator() {
   const [jobDescription, setJobDescription] = useState("");
   const { setResume } = useResumeStore();
-
+  const [pending, setPending] = useState(false);
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setPending(true);
     try {
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/resume/generate`,
@@ -28,6 +29,8 @@ export default function ResumeGenerator() {
       setResume(data.resume as Resume);
     } catch (err) {
       console.log(err);
+    } finally {
+      setPending(false);
     }
   };
 
@@ -44,6 +47,7 @@ export default function ResumeGenerator() {
       <button type="submit" disabled={!jobDescription}>
         Generate Resume
       </button>
+      {pending && <div>Generating resume...</div>}
     </form>
   );
 }
