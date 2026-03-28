@@ -6,7 +6,7 @@ import {
   FaMapMarkerAlt,
   FaMoneyBillWave,
 } from "react-icons/fa";
-import MatchBadge from "../matchBadge/matchBade";
+import MatchBadge from "../matchBadge/matchBadge";
 
 interface CandidateCardProps {
   entry: LeaderboardEntry;
