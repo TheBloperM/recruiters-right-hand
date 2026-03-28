@@ -4,17 +4,17 @@ import { ViewMode, type ViewModeType } from "@/types/viewMode";
 export const NAVIGATION_CONFIG: Record<ViewModeType, NavigationStep[]> = {
   [ViewMode.Candidate]: [
     {
-      label: "Upload & Setup",
+      label: "Setup",
       path: "/candidate",
       isDisabled: () => false,
     },
     {
-      label: "Tailored Output",
+      label: "Optimized Resume",
       path: "/output",
       isDisabled: (state) => !state,
     },
     {
-      label: "Export PDF",
+      label: "Download",
       path: "/output",
       isDisabled: (_, path: string) => path !== "/output",
       isExport: true,
@@ -22,12 +22,12 @@ export const NAVIGATION_CONFIG: Record<ViewModeType, NavigationStep[]> = {
   ],
   [ViewMode.Recruiter]: [
     {
-      label: "Job & Batch Upload",
+      label: "Upload Candidates",
       path: "/recruiter",
       isDisabled: () => false,
     },
     {
-      label: "Candidate Ranking",
+      label: "Leaderboard",
       path: "/leaderboard",
       isDisabled: (state) => !state,
     },
