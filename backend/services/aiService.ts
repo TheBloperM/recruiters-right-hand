@@ -36,16 +36,24 @@ const resumeSchema = {
       properties: {
         linkedin: {
           type: Type.STRING,
-          description: "Realistic mock LinkedIn URL",
+          description:
+            "shorted LinkedIn URL based on the generated name, e.g., linkedin.com/in/john-doe",
         },
-        email: { type: Type.STRING },
+        email: {
+          type: Type.STRING,
+          description: "mock email address used for job applications",
+        },
         protofolio: {
           type: Type.STRING,
-          description: "Realistic mock portfolio URL",
+          description: "shortened mock portfolio URL",
         },
         github: { type: Type.STRING, description: "Realistic mock GitHub URL" },
-        phoneNumber: { type: Type.STRING },
-        address: { type: Type.STRING },
+        phoneNumber: {
+          type: Type.STRING,
+          description:
+            "mock phone number formatted as (XXX) XXX-XXXX, used for job applications",
+        },
+        address: { type: Type.STRING, description: "city and country" },
       },
       required: [
         "linkedin",
@@ -68,6 +76,8 @@ const resumeSchema = {
     interests: {
       type: Type.ARRAY,
       items: { type: Type.STRING },
+      description:
+        "Candidate's interests and passions, does not need to be work-related.",
     },
     education: {
       type: Type.ARRAY,
