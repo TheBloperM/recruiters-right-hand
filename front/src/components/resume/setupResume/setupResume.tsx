@@ -31,7 +31,7 @@ export default function SetupResume() {
       const formData = new FormData();
       formData.append("resumeFiles", resumeFile as Blob);
 
-      const parseRes = await fetch("http://localhost:3000/resume/parse", {
+      const parseRes = await fetch("http://localhost:3000/file/parse", {
         method: "POST",
         body: formData,
       });
