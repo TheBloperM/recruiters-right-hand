@@ -20,6 +20,15 @@ router.post("/tailor", async (req: Request, res: Response) => {
       oldResume,
       jobDescription,
     );
+
+    if (resume.name.includes("ERROR")) {
+      const error: any = new Error(
+        "Either the job description or the resume contains invalid content.",
+      );
+      error.status = 422;
+      throw error;
+    }
+
     res.json({ resume });
   } catch (error: any) {
     console.error("AI Tailoring Error:", error);
@@ -44,6 +53,18 @@ router.post("/rank", async (req: Request, res: Response) => {
       resumes,
       jobDescription,
     );
+
+    if (
+      leaderboard.some(
+        (entry) => entry.summary === "ERROR: INVALID_DOCUMENT_TYPE",
+      )
+    ) {
+      const error: any = new Error(
+        "The job description or one or more of the candidate resumes are invalid.",
+      );
+      error.status = 422;
+      throw error;
+    }
     res.json({ leaderboard });
   } catch (error: any) {
     console.error("AI Ranking Error:", error);

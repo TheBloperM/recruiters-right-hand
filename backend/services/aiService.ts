@@ -13,6 +13,10 @@ export const tailorResumeForJobDescription = async (
 You are an elite ATS (Applicant Tracking System) optimizer and technical recruiter. 
 Your singular task is to rewrite a candidate's Original Resume to perfectly align with a target Job Description.
 
+--- CRITICAL GUARDRAIL: INPUT VALIDATION ---
+If the "ORIGINAL RESUME TEXT" or "TARGET JOB DESCRIPTION" provided below is garbled, contains non-resume content (e.g., a cooking recipe, random gibberish), or is otherwise invalid for professional processing, you MUST NOT proceed. 
+Instead, populate the "name" field with the exact string "ERROR: INVALID_RESUME_INPUT" and leave all other fields as empty strings or empty arrays.
+
 CRITICAL DIRECTIVES:
 
 1. ABSOLUTE FACTUALITY (ZERO HALLUCINATION): 
@@ -70,15 +74,18 @@ export const rankResumesForJobDescription = async (
 ): Promise<LeaderboardEntry[]> => {
   const rankingPrompt = `Act as a Senior Technical Recruiter and expert Applicant Tracking System (ATS) evaluator. Your task is to analyze a provided Job Description and objectively evaluate a batch of Candidate Resumes against it.
 
-Instructions:
+  --- CRITICAL GUARDRAIL: INPUT VALIDATION ---
+If any "CANDIDATE RESUME" or "TARGET JOB DESCRIPTION" provided below is invalid, garbled, or not a professional resume, you must still return an entry for that candidate but set their "score" to 0 and their "summary" to "ERROR: INVALID_DOCUMENT_TYPE".
 
-Analyze the Job Description: Identify the core requirements, mandatory skills (hard and soft), required years of experience, and nice-to-haves.
+INSTRUCTIONS:
 
-Evaluate the Candidates: Review each provided Resume strictly against the Job Description criteria. Look for direct matches, transferable skills, and explicitly note missing requirements. Do not invent or assume qualifications that are not explicitly written in the resume.
+ANALYZE the Job Description: Identify the core requirements, mandatory skills (hard and soft), required years of experience, and nice-to-haves.
 
-Score & Rank: Assign a "Fit Score" from 0 to 100 for each candidate based on their alignment with the role, then rank them from highest score to lowest.
+EVALUATE the Candidates: Review each provided Resume strictly against the Job Description criteria. Look for direct matches, transferable skills, and explicitly note missing requirements. Do not invent or assume qualifications that are not explicitly written in the resume.
 
-Summarize: Provide a concise breakdown of why the candidate received their score, highlighting their strongest matching points and their biggest gaps.
+SCORE & RANK: Assign a "Fit Score" from 0 to 100 for each candidate based on their alignment with the role, then rank them from highest score to lowest.
+
+SUMMARIZE: Provide a concise breakdown of why the candidate received their score, highlighting their strongest matching points and their biggest gaps.
 
 
 --- INPUT DATA ---
