@@ -6,34 +6,47 @@ import type { NavigationStep } from "@/types/navigationStep";
 interface ToolbarStepProps {
   step: NavigationStep;
   index: number;
-  onExportClick?: () => boolean;
   navigate: NavigateFunction;
+  onExportClick?: () => boolean;
   currentPath?: string;
   isNextStepReady?: boolean;
   showDivider?: boolean;
 }
 
-export default function ToolbarStep(props: ToolbarStepProps) {
-  const { step, index } = props;
+export default function ToolbarStep({
+  step,
+  index,
+  onExportClick,
+  navigate,
+  currentPath,
+  isNextStepReady,
+  showDivider,
+}: ToolbarStepProps) {
+  const isCurrentPath = currentPath === step.path;
+  const isExportAction = onExportClick !== undefined;
+
+  const handleClick = () => {
+    if (onExportClick) {
+      onExportClick();
+    } else {
+      navigate(step.path);
+    }
+  };
 
   return (
     <>
       <button
-        key={`${step.label}-button`}
-        onClick={() => props.onExportClick?.() ?? props.navigate(step.path)}
-        disabled={step.isDisabled(props.isNextStepReady, props.currentPath)}
+        onClick={handleClick}
+        disabled={step.isDisabled(isNextStepReady, currentPath)}
         className={classNames(style.stepBtn, {
-          [style.active]:
-            props.currentPath === step.path &&
-            props.onExportClick === undefined,
-          [style.exportBtn]:
-            props.currentPath === step.path &&
-            props.onExportClick !== undefined,
+          [style.active]: isCurrentPath && !isExportAction,
+          [style.exportBtn]: isCurrentPath && isExportAction,
         })}
       >
         <span className={style.stepNum}>{index + 1}</span> {step.label}
       </button>
-      {props.showDivider && <span className={style.stepDivider}></span>}
+
+      {showDivider && <span className={style.stepDivider}></span>}
     </>
   );
 }

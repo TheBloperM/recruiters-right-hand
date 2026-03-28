@@ -1,21 +1,24 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppStore } from "../../store";
 import { useShallow } from "zustand/shallow";
 import style from "./leaderboard.module.css";
 import type { LeaderboardEntry } from "../../../../utils/src/types";
 import CandidateCard from "./candidateCard/candidateCard";
-import { useNavigate } from "react-router-dom";
 
 export function Leaderboard() {
+  const navigate = useNavigate();
   const leaderboard = useAppStore(
     useShallow((state) => state.leaderboard as LeaderboardEntry[]),
   );
-  const navigate = useNavigate();
 
-  if (!leaderboard || leaderboard.length === 0) {
-    navigate("/recruiter");
+  useEffect(() => {
+    if (!leaderboard || leaderboard.length === 0) {
+      navigate("/recruiter", { replace: true });
+    }
+  }, [leaderboard, navigate]);
 
-    return null;
-  }
+  if (!leaderboard || leaderboard.length === 0) return null;
 
   const sortedLeaderboard = [...leaderboard].sort((a, b) => b.score - a.score);
 
@@ -31,7 +34,11 @@ export function Leaderboard() {
 
       <div className={style.cardList}>
         {sortedLeaderboard.map((entry, index) => (
-          <CandidateCard key={index} rank={index + 1} entry={entry} />
+          <CandidateCard
+            key={entry.candidateName}
+            rank={index + 1}
+            entry={entry}
+          />
         ))}
       </div>
     </div>

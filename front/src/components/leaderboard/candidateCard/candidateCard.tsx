@@ -1,21 +1,20 @@
+import classNames from "classnames";
 import type { LeaderboardEntry } from "recruiters-utils";
 import style from "./candidateCard.module.css";
+import MatchBadge from "../matchBadge/matchBadge";
 import {
   FaUserTie,
   FaGraduationCap,
   FaMapMarkerAlt,
   FaMoneyBillWave,
 } from "react-icons/fa";
-import MatchBadge from "../matchBadge/matchBadge";
 
 interface CandidateCardProps {
   entry: LeaderboardEntry;
   rank: number;
 }
 
-export default function CandidateCard(props: CandidateCardProps) {
-  const { entry, rank } = props;
-
+export default function CandidateCard({ entry, rank }: CandidateCardProps) {
   const getScoreClass = (score: number) => {
     if (score >= 85) return style.scoreHigh;
     if (score >= 60) return style.scoreMedium;
@@ -29,7 +28,9 @@ export default function CandidateCard(props: CandidateCardProps) {
           <span className={style.rank}>#{rank}</span>
           <h2>{entry.candidateName}</h2>
         </div>
-        <div className={`${style.scoreBadge} ${getScoreClass(entry.score)}`}>
+        <div
+          className={classNames(style.scoreBadge, getScoreClass(entry.score))}
+        >
           {entry.score}
         </div>
       </header>
@@ -72,8 +73,8 @@ export default function CandidateCard(props: CandidateCardProps) {
           <div className={style.skillsList}>
             <h3>Key Skills</h3>
             <ul>
-              {entry.keySkills.map((skill, idx) => (
-                <li key={idx} className={style.skillPill}>
+              {entry.keySkills.map((skill) => (
+                <li key={skill} className={style.skillPill}>
                   {skill}
                 </li>
               ))}
@@ -83,8 +84,8 @@ export default function CandidateCard(props: CandidateCardProps) {
           <div className={style.skillsList}>
             <h3>Key Gaps</h3>
             <ul>
-              {entry.keyGaps.map((gap, idx) => (
-                <li key={idx} className={style.gapPill}>
+              {entry.keyGaps.map((gap) => (
+                <li key={gap} className={style.gapPill}>
                   {gap}
                 </li>
               ))}

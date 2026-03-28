@@ -66,7 +66,6 @@ export default function Layout() {
               id="mode-select"
               value={viewMode}
               className={style.selectViewMode}
-              defaultValue={viewMode}
               onChange={(e) => {
                 setViewMode(e.target.value as "Candidate" | "Recruiter");
                 navigate(`/${e.target.value.toLocaleLowerCase()}`);
