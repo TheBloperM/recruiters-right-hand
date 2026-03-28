@@ -1,7 +1,3 @@
-Here is the updated, perfectly tailored `README.md`. It reflects your new monorepo workspace setup and highlights the ultimate "one-click" `npm start` god-command we just built.
-
----
-
 # Recruiter's Right Hand
 
 An AI-powered, full-stack monorepo application designed to parse existing resumes and automatically tailor them to specific job descriptions using Google's Gemini AI. It outputs an ATS-friendly, text-selectable PDF that maximizes a candidate's chances of passing automated screening.
