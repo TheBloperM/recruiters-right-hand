@@ -1,0 +1,19 @@
+{
+  "name": "recruiters-right-hand-root",
+  "private": true,
+  "workspaces": [
+    "front",
+    "backend",
+    "utils"
+  ],
+  "scripts": {
+    "build:utils": "npm run build --workspace=utils",
+    "dev:front": "npm run dev --workspace=front",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev": "concurrently -c \"cyan,magenta\" -n \"FRONT,BACKEND\" \"npm run dev:front\" \"npm run dev:backend\"",
+    "start": "npm install && npm run build:utils && npm run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
