@@ -63,7 +63,3 @@ Processing multiple candidates requires a shift from "creative tailoring" to **a
 
 - **Decision:** Replaced hardcoded styles with a centralized **CSS Variable System** and used Zustand's `useShallow` for state subscriptions.
 - **Reasoning:** Standardizing on variables like `--blue` and `--text-main` ensures a unified brand identity. Using `useShallow` prevents massive components from re-rendering unnecessarily, maintaining a 60fps experience even with complex resume layouts.
-
----
-
-**Would you like me to add a "Future Roadmap" section to this document detailing how we might scale the PDF parsing or AI model choice?**
