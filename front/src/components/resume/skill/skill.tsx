@@ -1,7 +1,7 @@
 import type { SkillsAndTechnologies } from "recruiters-utils";
 import SectionTitle from "../sectionTitle/sectionTitle";
 import style from "./skill.module.css";
-import { camelToTitleCase } from "@/utils/utils.";
+import { camelToTitleCase } from "@/utils/textUtils";
 
 interface SkillProps {
   skills: SkillsAndTechnologies;

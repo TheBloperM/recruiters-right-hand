@@ -2,71 +2,84 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "../../store";
 import { Toaster } from "react-hot-toast";
 import style from "./layout.module.css";
-import classNames from "classnames";
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
+import ToolbarStep from "./toolbarStep/toolbarStep";
+import { useShallow } from "zustand/shallow";
+import { NAVIGATION_CONFIG } from "@/utils/navigationUtils";
+import { ViewMode } from "@/types/viewMode";
+import { FaChevronDown } from "react-icons/fa";
 
 export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { resume } = useAppStore();
+  const { resumeName, setViewMode, viewMode } = useAppStore(
+    useShallow((state) => ({
+      resumeName: state.resume?.name,
+      viewMode: state.viewMode,
+      setViewMode: state.setViewMode,
+    })),
+  );
   const printTargetRef = useRef<HTMLElement | null>(null);
 
   const handleExport = useReactToPrint({
     contentRef: printTargetRef,
-    documentTitle: resume
-      ? `${resume.name.replace(/\s+/g, "_")}_Resume`
+    documentTitle: resumeName
+      ? `${resumeName.replace(/\s+/g, "_")}_Resume`
       : "Tailored_Resume",
   });
 
-  const onExportClick = () => {
+  const onExportClick = (): boolean => {
     printTargetRef.current = document.getElementById("resume-print-target");
     handleExport();
+
+    return true;
   };
+
   return (
     <div className={style.appContainer}>
       <Toaster position="top-right" toastOptions={{ duration: 7000 }} />
       <nav className={style.toolbarContainer}>
-        <div>
-          <strong>ATS</strong> Optimizer
+        <div className={style.toolbarSideContainer}>
+          <span>
+            <strong>ATS</strong> Optimizer
+          </span>
+          <div className={style.selectContainer}>
+            <label htmlFor="mode-select" className={style.selectLabel}>
+              Who Are You?:
+            </label>
+            <select
+              id="mode-select"
+              value={viewMode}
+              className={style.selectViewMode}
+              onChange={(e) =>
+                setViewMode(e.target.value as "Candidate" | "Recruiter")
+              }
+            >
+              {Object.values(ViewMode).map((mode) => (
+                <option key={mode} value={mode}>
+                  {mode}
+                </option>
+              ))}
+            </select>
+            <FaChevronDown className={style.selectIcon} />
+          </div>
         </div>
 
         <div className={style.toolbarStepper}>
-          <button
-            onClick={() => navigate("/")}
-            className={classNames(style.stepBtn, {
-              [style.active]: location.pathname === "/",
-            })}
-          >
-            <span className={style.stepNum}>1</span> Upload & Setup
-          </button>
-
-          <span className={style.stepDivider}></span>
-
-          <button
-            onClick={() => navigate("/output")}
-            disabled={!resume}
-            className={classNames(style.stepBtn, {
-              [style.active]: location.pathname === "/output",
-            })}
-          >
-            <span className={style.stepNum}>2</span> Tailored Output
-          </button>
-
-          <span className={style.stepDivider}></span>
-
-          <button
-            onClick={onExportClick}
-            disabled={location.pathname !== "/output"}
-            className={classNames(style.stepBtn, {
-              [style.exportBtn]: location.pathname === "/output",
-            })}
-          >
-            <span className={style.stepNum}>3</span> Export PDF
-          </button>
+          {NAVIGATION_CONFIG[viewMode].map((step, index) => (
+            <ToolbarStep
+              key={step.label}
+              index={index}
+              step={step}
+              navigate={navigate}
+              currentPath={location.pathname}
+              onExportClick={step.isExport ? onExportClick : undefined}
+              showDivider={index < NAVIGATION_CONFIG[viewMode].length - 1}
+              isNextStepReady={!!resumeName}
+            />
+          ))}
         </div>
-
-        <div className={style.toolbarActions}></div>
       </nav>
 
       <main>
