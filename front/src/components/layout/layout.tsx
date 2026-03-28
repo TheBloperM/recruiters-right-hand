@@ -54,7 +54,7 @@ export default function Layout() {
     <div className={style.appContainer}>
       <Toaster position="top-right" toastOptions={{ duration: 7000 }} />
       <nav className={style.toolbarContainer}>
-        <div className={style.toolbarSideContainer}>
+        <div className={style.toolbarFlexContainer}>
           <span>
             <strong>ATS</strong> Optimizer
           </span>
@@ -82,7 +82,7 @@ export default function Layout() {
           </div>
         </div>
 
-        <div className={style.toolbarStepper}>
+        <div className={style.toolbarFlexContainer}>
           {NAVIGATION_CONFIG[viewMode].map((step, index) => (
             <ToolbarStep
               key={step.label}

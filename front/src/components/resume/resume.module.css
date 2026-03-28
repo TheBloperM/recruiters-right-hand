@@ -1,20 +1,18 @@
-.resumeContainer{
-    display: flex;
-    flex-direction: row;
+.resumeContainer {
+  display: flex;
 }
 
-.generalSide{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 25%;
-    margin-right: 2rem;
+.generalSide {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 25%;
+  margin-right: 2rem;
 }
 
-.workSide{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 75%;
+.workSide {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 75%;
 }
-

@@ -10,11 +10,11 @@
 .header h1 {
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
-  color: #1a1a1a;
+  color: var(--text-main);
 }
 
 .header p {
-  color: #666;
+  color: var(--text-muted);
 }
 
 .cardList {

@@ -13,12 +13,11 @@
 
 .jobTitle {
   color: var(--blue);
-  font-size: large;
+  font-size: 1.125rem;
   font-weight: 600;
 }
 
 .jobLocation {
-  font-size: larger;
+  font-size: 1.25rem;
   font-weight: 500;
 }
-

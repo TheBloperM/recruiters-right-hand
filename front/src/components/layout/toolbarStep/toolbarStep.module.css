@@ -5,7 +5,7 @@
   align-items: center;
   gap: 0.5rem;
   font-weight: 500;
-  color: #6b7280;
+  color: var(--text-muted);
   cursor: pointer;
   transition: color 0.2s ease-in-out;
 }
@@ -16,7 +16,7 @@
 }
 
 .stepBtn.active {
-  color: var(--blue); 
+  color: var(--blue);
 }
 
 .stepNum {
@@ -26,7 +26,7 @@
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background-color: #e5e7eb;
+  background-color: var(--border-dark);
   font-size: 0.8rem;
   transition: background-color 0.2s ease-in-out;
 }
@@ -37,12 +37,12 @@
 }
 
 .stepBtn.exportBtn .stepNum {
-  background-color: #10b981; 
+  background-color: #10b981;
   color: white;
 }
 
 .stepDivider {
   width: 2.5rem;
   height: 0.125rem;
-  background-color: #e5e7eb;
+  background-color: var(--border-dark);
 }

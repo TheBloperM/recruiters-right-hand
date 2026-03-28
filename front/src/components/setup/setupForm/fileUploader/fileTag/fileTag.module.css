@@ -1,18 +1,18 @@
 .fileTag {
   display: flex;
   align-items: center;
-  background-color: #ebf4ff;
-  border: 1px solid #bee3f8;
+  background-color: var(--info-bg);
+  border: 1px solid var(--info-border);
   border-radius: 1rem;
   padding: 0.25rem 0.625rem;
   font-size: 0.813rem;
-  color: #2b6cb0;
+  color: var(--info-text);
   max-width: 15.625rem;
   transition: all 0.2s ease;
 }
 
 .fileTag:hover {
-  background-color: #bee3f8;
+  background-color: var(--info-border);
 }
 
 .fileName {
@@ -25,7 +25,7 @@
 .removeBtn {
   background: none;
   border: none;
-  color: #2b6cb0;
+  color: var(--info-text);
   font-size: 1.125rem;
   font-weight: bold;
   cursor: pointer;
@@ -37,5 +37,5 @@
 }
 
 .removeBtn:hover {
-  color: #e53e3e;
+  color: var(--danger-text);
 }

@@ -1,21 +1,21 @@
-.container{
-    display: flex;
-    flex-direction: column;
-    background: var(--blue);
-    color:white;
-    margin-bottom:1.5rem;
-    padding: 1rem;
-    border-radius: 1rem;
-    gap: 1rem;
+.container {
+  display: flex;
+  flex-direction: column;
+  background: var(--blue);
+  color: white;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  gap: 1rem;
 }
 
-.name{
-    font-size: large;
-    width: fit-content;
-    border-bottom: 1px solid white;
-    font-style: oblique;
+.name {
+  font-size: 1.125rem;
+  width: fit-content;
+  border-bottom: 1px solid white;
+  font-style: oblique;
 }
 
-.title{
-    font-size: medium;
+.title {
+  font-size: 1rem;
 }

@@ -1,12 +1,12 @@
 .years {
   font-style: italic;
   color: var(--blue);
-  font-size: smaller;
+  font-size: 0.875rem;
   font-weight: 500;
 }
 
 .comments {
-  font-size: smaller;
+  font-size: 0.875rem;
 }
 
 .itemFlexGap {

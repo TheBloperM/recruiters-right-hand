@@ -8,9 +8,23 @@
   font-weight: 500;
 }
 
-.badgeMatch { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-.badgeMiss { background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }
+.badgeMatch {
+  background: var(--success-bg);
+  color: var(--success-text);
+  border: 1px solid var(--success-border);
+}
+.badgeMiss {
+  background: var(--bg-muted);
+  color: var(--text-muted);
+  border: 1px solid var(--border-light);
+}
 
-.statusIcon { font-size: 1rem; }
-.badgeMatch .statusIcon { color: #22c55e; }
-.badgeMiss .statusIcon { color: #cbd5e1; }
+.statusIcon {
+  font-size: 1rem;
+}
+.badgeMatch .statusIcon {
+  color: var(--success-icon);
+}
+.badgeMiss .statusIcon {
+  color: var(--border-light);
+}

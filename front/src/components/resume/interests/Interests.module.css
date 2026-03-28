@@ -1,24 +1,22 @@
-.container{
-    display: flex;
-    flex-direction: column;
-    gap:0.75rem;
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.interestsContainer{
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    align-items: center;
+.interestsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
 }
 
-.interest{ 
-    font-weight: 500;
-    color:var(--blue);
-    border-radius: 0.5rem;
-    width: max-content;
-    padding: 0.25rem;
-    border: 0.125rem solid var(--blue);    
-    font-size: smaller;
-
+.interest {
+  font-weight: 500;
+  color: var(--blue);
+  border-radius: 0.5rem;
+  width: fit-content;
+  padding: 0.25rem 0.75rem;
+  border: 0.125rem solid var(--blue);
+  font-size: 0.875rem;
 }

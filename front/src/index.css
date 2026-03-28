@@ -2,7 +2,30 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 
   --blue: #4459a2;
+
+  --bg-page: #ffffff;
+  --bg-muted: #f8fafc;
+  --border-light: #e2e8f0;
+  --border-dark: #e5e7eb;
+
+  --text-main: #0f172a;
+  --text-subtle: #334155;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+
+  --success-bg: #f0fdf4;
+  --success-text: #166534;
+  --success-border: #bbf7d0;
+  --success-icon: #22c55e;
+
+  --danger-bg: #fff1f2;
+  --danger-text: #be123c;
+  --danger-border: #fecdd3;
+
+  --warning-bg: #fef08a;
+  --warning-text: #854d0e;
+
+  --info-bg: #eff6ff;
+  --info-text: #1d4ed8;
+  --info-border: #bfdbfe;
 }
-
-
-
