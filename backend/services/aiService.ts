@@ -1,5 +1,5 @@
-import { GoogleGenAI, Type } from '@google/genai';
-import { Resume } from 'recruiters-utils'; // <-- 1. Import your shared type!
+import { GoogleGenAI, Type } from "@google/genai";
+import { Resume } from "recruiters-utils"; // <-- 1. Import your shared type!
 
 const ai = new GoogleGenAI({});
 
@@ -8,44 +8,66 @@ const skillSchema = {
   type: Type.OBJECT,
   properties: {
     name: { type: Type.STRING },
-    level: { 
-      type: Type.STRING, 
+    level: {
+      type: Type.STRING,
       enum: ["1", "2", "3", "4", "5"],
-      description: "Proficiency level from 1 (beginner) to 5 (master)."
-    }
+      description: "Proficiency level from 1 (beginner) to 5 (master).",
+    },
   },
-  required: ["name", "level"]
+  required: ["name", "level"],
 };
 
 const resumeSchema = {
   type: Type.OBJECT,
   properties: {
     name: { type: Type.STRING },
-    description: { type: Type.STRING, description: "A highly compelling professional summary for the candidate." },
+    professionalTitle: {
+      type: Type.STRING,
+      description:
+        "A compelling job title that reflects the candidate's expertise.",
+    },
+    description: {
+      type: Type.STRING,
+      description:
+        "A highly compelling professional summary for the candidate.",
+    },
     contractData: {
       type: Type.OBJECT,
       properties: {
-        linkedin: { type: Type.STRING, description: "Realistic mock LinkedIn URL" },
+        linkedin: {
+          type: Type.STRING,
+          description: "Realistic mock LinkedIn URL",
+        },
         email: { type: Type.STRING },
-        protofolio: { type: Type.STRING, description: "Realistic mock portfolio URL" },
+        protofolio: {
+          type: Type.STRING,
+          description: "Realistic mock portfolio URL",
+        },
         github: { type: Type.STRING, description: "Realistic mock GitHub URL" },
         phoneNumber: { type: Type.STRING },
-        address: { type: Type.STRING }
+        address: { type: Type.STRING },
       },
-      required: ["linkedin", "email", "protofolio", "github", "phoneNumber", "address"]
+      required: [
+        "linkedin",
+        "email",
+        "protofolio",
+        "github",
+        "phoneNumber",
+        "address",
+      ],
     },
     skillsAndTechnologies: {
       type: Type.OBJECT,
       properties: {
         softSkills: { type: Type.ARRAY, items: skillSchema },
         programmingLanguages: { type: Type.ARRAY, items: skillSchema },
-        technologies: { type: Type.ARRAY, items: skillSchema }
+        technologies: { type: Type.ARRAY, items: skillSchema },
       },
-      required: ["softSkills", "programmingLanguages", "technologies"]
+      required: ["softSkills", "programmingLanguages", "technologies"],
     },
     interests: {
       type: Type.ARRAY,
-      items: { type: Type.STRING }
+      items: { type: Type.STRING },
     },
     education: {
       type: Type.ARRAY,
@@ -56,10 +78,16 @@ const resumeSchema = {
           educationPlace: { type: Type.STRING },
           mainSubjects: { type: Type.ARRAY, items: { type: Type.STRING } },
           startingYear: { type: Type.INTEGER },
-          endingYear: { type: Type.INTEGER }
+          endingYear: { type: Type.INTEGER },
         },
-        required: ["nameOfTitle", "educationPlace", "mainSubjects", "startingYear", "endingYear"]
-      }
+        required: [
+          "nameOfTitle",
+          "educationPlace",
+          "mainSubjects",
+          "startingYear",
+          "endingYear",
+        ],
+      },
     },
     experience: {
       type: Type.ARRAY,
@@ -75,26 +103,46 @@ const resumeSchema = {
                 title: { type: Type.STRING },
                 industry: { type: Type.STRING },
                 startDate: { type: Type.STRING, description: "e.g., Jan 2020" },
-                endDate: { type: Type.STRING, description: "e.g., Present or Dec 2023" },
-                comments: { 
-                  type: Type.ARRAY, 
+                endDate: {
+                  type: Type.STRING,
+                  description: "e.g., Present or Dec 2023",
+                },
+                comments: {
+                  type: Type.ARRAY,
                   items: { type: Type.STRING },
-                  description: "Resume bullet points using strong action verbs and quantifiable metrics."
-                }
+                  description:
+                    "Resume bullet points using strong action verbs and quantifiable metrics.",
+                },
               },
-              required: ["title", "industry", "startDate", "endDate", "comments"]
-            }
-          }
+              required: [
+                "title",
+                "industry",
+                "startDate",
+                "endDate",
+                "comments",
+              ],
+            },
+          },
         },
-        required: ["workPlace", "jobsData"]
-      }
-    }
+        required: ["workPlace", "jobsData"],
+      },
+    },
   },
-  required: ["name", "description", "contractData", "skillsAndTechnologies", "interests", "education", "experience"]
+  required: [
+    "name",
+    "description",
+    "contractData",
+    "skillsAndTechnologies",
+    "interests",
+    "education",
+    "experience",
+  ],
 };
 
 // 3. Strongly type the function signature and the return value
-export const generateResumeFromJobDescription = async (jobDescription: string): Promise<Resume> => {
+export const generateResumeFromJobDescription = async (
+  jobDescription: string,
+): Promise<Resume> => {
   try {
     const recruiterPrompt = `Act as an elite Executive Recruiter. I will provide a job description below. Reverse-engineer this description and generate a highly detailed resume for the ideal "unicorn" candidate who perfectly matches the role.
 
@@ -107,17 +155,16 @@ export const generateResumeFromJobDescription = async (jobDescription: string): 
     ${jobDescription}`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: "gemini-2.5-flash",
       contents: recruiterPrompt,
       config: {
         responseMimeType: "application/json",
         responseSchema: resumeSchema,
-      }
+      },
     });
 
     // 4. Cast the parsed JSON as your Resume interface
     return JSON.parse(response.text!) as Resume;
-
   } catch (error) {
     console.error("Gemini API Error:", error);
     throw new Error("Failed to generate resume from Google AI.");
