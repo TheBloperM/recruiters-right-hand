@@ -25,21 +25,16 @@ export function RankingSetup() {
   const onResumesSuccessfulyRanked = (response: {
     leaderboard: LeaderboardEntry[];
   }) => {
-    console.log("Received leaderboard from backend:", response.leaderboard);
     setLeaderboard(response.leaderboard);
   };
-  const title = "Rank Your Resumes";
-
-  const subtTile =
-    "Upload your resumes and paste the target job description. \n Our AI will intelligently rank your candidates based on their fit for the role.";
-
-  const buttonLabel = "Rank Resumes";
 
   return (
     <SetupForm
-      title={title}
-      subtitle={subtTile}
-      buttonText={buttonLabel}
+      title={"Rank Your Resumes"}
+      subtitle={
+        "Upload your resumes and paste the target job description. \n Our AI will intelligently rank your candidates based on their fit for the role."
+      }
+      buttonText={"Rank Resumes"}
       onSubmit={submitResumesForRanking}
       onSuccess={onResumesSuccessfulyRanked}
       allowMultiple

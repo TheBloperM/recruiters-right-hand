@@ -1,0 +1,41 @@
+.fileTag {
+  display: flex;
+  align-items: center;
+  background-color: #ebf4ff;
+  border: 1px solid #bee3f8;
+  border-radius: 16px;
+  padding: 4px 10px;
+  font-size: 13px;
+  color: #2b6cb0;
+  max-width: 250px;
+  transition: all 0.2s ease;
+}
+
+.fileTag:hover {
+  background-color: #bee3f8;
+}
+
+.fileName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 6px;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  color: #2b6cb0;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removeBtn:hover {
+  color: #e53e3e;
+}

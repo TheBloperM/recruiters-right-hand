@@ -19,6 +19,7 @@ export function TailoringSetup() {
     });
 
     if (!tailorRes.ok) throw new Error("Failed to tailor resume via AI");
+
     return tailorRes.json();
   };
 
