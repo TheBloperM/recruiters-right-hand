@@ -16,7 +16,7 @@
 }
 
 .stepBtn.active {
-  color: #4459a2; 
+  color: var(--blue); 
 }
 
 .stepNum {
@@ -32,7 +32,7 @@
 }
 
 .stepBtn.active .stepNum {
-  background-color: #4459a2;
+  background-color: var(--blue);
   color: white;
 }
 

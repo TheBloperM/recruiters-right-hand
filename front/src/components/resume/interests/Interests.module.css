@@ -14,11 +14,11 @@
 
 .interest{ 
     font-weight: 500;
-    color:#4459a2;
+    color:var(--blue);
     border-radius: 0.5rem;
     width: max-content;
     padding: 0.25rem;
-    border: 0.125rem solid #4459a2;    
+    border: 0.125rem solid var(--blue);    
     font-size: smaller;
 
 }

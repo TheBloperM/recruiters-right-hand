@@ -12,7 +12,7 @@
 }
 
 .jobTitle {
-  color: #4459a2;
+  color: var(--blue);
   font-size: large;
   font-weight: 600;
 }

@@ -7,13 +7,13 @@
 .title{
     font-size: large;
     font-weight: 600;
-    color: #4459a2;
-    border-bottom: 3px solid #4459a2;
+    color: var(--blue);
+    border-bottom: 0.188rem solid var(--blue);
 }
 
 .subTitle{
     font-weight: 500;
-    color: #4459a2;
+    color: var(--blue);
     
 }
 
@@ -35,7 +35,7 @@
 }
 
 .skill{
-    background-color: #4459a2;
+    background-color: var(--blue);
     border-radius: 0.5rem;
     width: max-content;
     padding: 0.25rem;

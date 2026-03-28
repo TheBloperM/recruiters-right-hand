@@ -1,6 +1,6 @@
 .title{
     font-size: large;
     font-weight: 600;
-    color: #4459a2;
-    border-bottom: 0.188rem solid #4459a2;
+    color: var(--blue);
+    border-bottom: 0.188rem solid var(--blue);
 }

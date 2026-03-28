@@ -1,6 +1,6 @@
 .years {
   font-style: italic;
-  color: #4459a2;
+  color: var(--blue);
   font-size: smaller;
   font-weight: 500;
 }

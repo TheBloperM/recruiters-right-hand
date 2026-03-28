@@ -10,7 +10,7 @@
 
 
 .educationTitle{
-    color: #4459a2;
+    color: var(--blue);
     font-size: large;
     font-weight: 600;
 }
@@ -22,6 +22,6 @@
 
 .educationInfo{
     font-style: italic;
-    color: #4459a2 !important;
+    color: var(--blue) !important;
     font-size: small !important;
 }
