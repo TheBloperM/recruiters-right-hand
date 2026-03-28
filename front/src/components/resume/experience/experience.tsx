@@ -13,30 +13,28 @@ export default function Experience(props: ExperienceProps) {
       <SectionTitle text={"Experience"} />
 
       <div className={classNames(style.flex, style.flexGap)}>
-        {props.experience.map(({ workPlace, jobsData }) => (
+        {props.experience.map(({ workPlace, jobsData, industry }) => (
           <>
             <div className={style.jobLocation}>{workPlace}</div>
-            {jobsData.map(
-              ({ title, startDate, endDate, industry, comments }) => (
-                <div
-                  className={classNames(style.flex, style.itemFlexGap)}
-                  key={`${title}-${industry}`}
-                >
-                  <div className={style.jobTitle}>{title}</div>
-                  <div className={style.jobTitle}>{industry}</div>
-                  <div className={style.years}>
-                    {startDate}-{endDate}
-                  </div>
-                  <div className={classNames(style.flex, style.itemFlexGap)}>
-                    {comments.map((comment, cindex) => (
-                      <div className={style.comments} key={`comment-${cindex}`}>
-                        - {comment}
-                      </div>
-                    ))}
-                  </div>
+            <div className={style.jobTitle}>{industry}</div>
+            {jobsData.map(({ title, startDate, endDate, comments }) => (
+              <div
+                className={classNames(style.flex, style.itemFlexGap)}
+                key={`${workPlace}-${title}`}
+              >
+                <div className={style.jobTitle}>{title}</div>
+                <div className={style.years}>
+                  {startDate}-{endDate}
                 </div>
-              ),
-            )}
+                <div className={classNames(style.flex, style.itemFlexGap)}>
+                  {comments.map((comment, cindex) => (
+                    <div className={style.comments} key={`comment-${cindex}`}>
+                      - {comment}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </>
         ))}
       </div>
