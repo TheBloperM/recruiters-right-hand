@@ -1,3 +1,4 @@
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 interface FileProcessingHookProps<T> {
@@ -5,10 +6,15 @@ interface FileProcessingHookProps<T> {
   onSuccess: (response: T) => void;
 }
 
-export default function useFileProcessing<T>(
-  props: FileProcessingHookProps<T>,
-) {
+export default function useFileProcessing<T>({
+  onSubmit,
+  onSuccess,
+}: FileProcessingHookProps<T>) {
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const proccessFiles = async (files: File[], jobDescription: string) => {
+    setIsProcessing(true); // Lock the form
+
     const parsingPipeline = async () => {
       const formData = new FormData();
       files.forEach((file) => formData.append("resumeFiles", file));
@@ -25,7 +31,7 @@ export default function useFileProcessing<T>(
         (response: { text: string }) => response.text,
       );
 
-      return await props.onSubmit(extractedTexts, jobDescription);
+      return await onSubmit(extractedTexts, jobDescription);
     };
 
     toast
@@ -35,10 +41,11 @@ export default function useFileProcessing<T>(
         error: (err) => err.message || "An error occurred.",
       })
       .then((response) => {
-        props.onSuccess(response);
+        if (response) onSuccess(response);
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setIsProcessing(false)); // Unlock the form
   };
 
-  return { proccessFiles };
+  return { proccessFiles, isProcessing };
 }

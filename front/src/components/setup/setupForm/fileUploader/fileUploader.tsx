@@ -16,7 +16,7 @@ export default function FileUploader({
   onRemove,
 }: FileUploaderProps) {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files.length > 0) {
       onAdd(Array.from(e.target.files));
       e.target.value = "";
     }
@@ -47,16 +47,17 @@ export default function FileUploader({
         </div>
       </div>
 
-      <div className={style.fileList}>
-        {files.map((file, index) => (
-          <FileTag
-            key={index}
-            fileName={file.name}
-            index={index}
-            onRemove={() => onRemove(index)}
-          />
-        ))}
-      </div>
+      {files.length > 0 && (
+        <div className={style.fileList}>
+          {files.map((file, index) => (
+            <FileTag
+              key={`${file.name}-${index}`}
+              fileName={file.name}
+              onRemove={() => onRemove(index)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

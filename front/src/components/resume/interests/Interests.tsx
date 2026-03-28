@@ -6,13 +6,13 @@ interface InterestsProps {
   interests: Resume["interests"];
 }
 
-export default function Interests(props: InterestsProps) {
+export default function Interests({ interests }: InterestsProps) {
   return (
     <div className={style.container}>
       <SectionTitle text={"Interests"} />
 
       <div className={style.interestsContainer}>
-        {props.interests.map((interest) => (
+        {interests.map((interest) => (
           <div className={style.interest} key={interest}>
             {interest}
           </div>

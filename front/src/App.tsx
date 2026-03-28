@@ -4,16 +4,8 @@ import Resume from "./components/resume/resume";
 import { TailoringSetup } from "./components/setup/tailoringSetup";
 import { RankingSetup } from "./components/setup/rankingSetup";
 import { Leaderboard } from "./components/leaderboard/leaderboard";
-import { useEffect } from "react";
-import { useAppStore } from "./store";
 
 export default function App() {
-  const leaderboard = useAppStore((state) => state.leaderboard);
-
-  useEffect(() => {
-    console.log(leaderboard, "leaderboard in app.tsx");
-  }, [leaderboard]);
-
   return (
     <BrowserRouter>
       <Routes>
