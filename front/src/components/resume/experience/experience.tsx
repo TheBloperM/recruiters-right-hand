@@ -18,15 +18,20 @@ export default function Experience(props: ExperienceProps) {
             <div className={style.jobLocation}>{workPlace}</div>
             {jobsData.map(
               ({ title, startDate, endDate, industry, comments }) => (
-                <div className={classNames(style.flex, style.itemFlexGap)}>
+                <div
+                  className={classNames(style.flex, style.itemFlexGap)}
+                  key={`${title}-${industry}`}
+                >
                   <div className={style.jobTitle}>{title}</div>
                   <div className={style.jobTitle}>{industry}</div>
                   <div className={style.years}>
                     {startDate}-{endDate}
                   </div>
                   <div className={classNames(style.flex, style.itemFlexGap)}>
-                    {comments.map((comment) => (
-                      <div className={style.comments}>- {comment}</div>
+                    {comments.map((comment, cindex) => (
+                      <div className={style.comments} key={`comment-${cindex}`}>
+                        - {comment}
+                      </div>
                     ))}
                   </div>
                 </div>

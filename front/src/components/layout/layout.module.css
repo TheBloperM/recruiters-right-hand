@@ -1,0 +1,67 @@
+/* Toolbar.module.css */
+.toolbarContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.toolbarStepper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stepBtn {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.stepBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stepBtn.active {
+  color: #4459a2; 
+}
+
+.stepNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #e5e7eb;
+  font-size: 0.8rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.stepBtn.active .stepNum {
+  background-color: #4459a2;
+  color: white;
+}
+
+.stepDivider {
+  width: 40px;
+  height: 2px;
+  background-color: #e5e7eb;
+}
+
+.toolbarActions {
+  display: flex;
+  gap: 1rem;
+}

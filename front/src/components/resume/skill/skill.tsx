@@ -1,6 +1,7 @@
 import type { SkillsAndTechnologies } from "recruiters-utils";
 import SectionTitle from "../sectionTitle/sectionTitle";
 import style from "./skill.module.css";
+import { camelToTitleCase } from "@/utils/utils.";
 
 interface SkillProps {
   skills: SkillsAndTechnologies;
@@ -17,13 +18,17 @@ export function SkillsAndTechnlogies(props: SkillProps) {
 
         return (
           <div className={style.skillBoxContainer} key={key}>
-            <span className={style.subTitle}>{skillKey} -</span>
+            <span className={style.subTitle}>
+              {camelToTitleCase(skillKey)} -
+            </span>
 
             <div className={style.skillListContainer}>
               {skills.map((skill) => (
-                <div className={style.skill}>
-                  {skill.name}
-                  {` (${skill.level})`}
+                <div
+                  className={style.skill}
+                  key={`${skill.name} (${skill.level})`}
+                >
+                  {`${skill.name} (${skill.level})`}
                 </div>
               ))}
             </div>

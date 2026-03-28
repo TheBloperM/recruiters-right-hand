@@ -1,0 +1,160 @@
+.pageWrapper {
+  margin: 3rem auto;
+  width: 100%;
+  max-width: 600px;
+}
+
+.formContainer {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: 0.875rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #1f2937;
+  resize: none;
+  overflow-y: hidden;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #4459a2;
+  box-shadow: 0 0 0 3px rgba(68, 89, 162, 0.15); 
+}
+
+/* The action button */
+.submitButton {
+  background-color: #4459a2;
+  color: white;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #354680;
+}
+
+.submitButton:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+
+.headerSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem; 
+  text-align: center; 
+}
+
+.title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #4459a2; 
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #6b7280;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem; 
+}
+
+/* The visual box with the dashed border */
+.dropzoneWrapper {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  overflow: hidden; /* Keeps the invisible input from bleeding out */
+  margin-top: 0.5rem;
+}
+
+/* Add a nice blue hover effect when they drag over it */
+.dropzoneWrapper:hover {
+  border-color: #4459a2;
+  background-color: #f0f4f8; /* Very faint blue tint */
+}
+
+/* THE CSS HACK: Stretches the input and makes it invisible */
+.hiddenFileInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0; /* Invisible! */
+  cursor: pointer;
+  z-index: 10; /* Ensures it sits on top of the text */
+}
+
+/* Centers the icon and text inside the box */
+.dropzoneContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none; /* Prevents text from blocking clicks to the input */
+}
+
+.uploadIcon {
+  font-size: 2rem;
+  opacity: 0.7;
+}
+
+.dropzoneText {
+  color: #6b7280;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Highlights the text when a file is successfully attached */
+.fileName {
+  color: #4459a2;
+  font-weight: 600;
+}

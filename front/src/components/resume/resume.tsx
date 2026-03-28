@@ -5,6 +5,7 @@ import Contract from "./contract/contract";
 import { SkillsAndTechnlogies } from "./skill/skill";
 import Interests from "./interests/Interests";
 import Experience from "./experience/experience";
+import Education from "./education/education";
 
 export default function ResumeComponent() {
   const { resume } = useResumeStore();
@@ -12,7 +13,7 @@ export default function ResumeComponent() {
   return (
     <>
       {resume && (
-        <div>
+        <div className={style.pageWrapper}>
           <Title
             name={`${resume.name} - ${resume.professionalTitle}`}
             description={resume.description}
@@ -25,6 +26,7 @@ export default function ResumeComponent() {
             </div>
             <div className={style.workSide}>
               <Experience experience={resume.experience} />
+              <Education education={resume.education} />
             </div>
           </div>
         </div>
