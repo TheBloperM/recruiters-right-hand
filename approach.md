@@ -49,6 +49,7 @@ Processing multiple candidates requires a shift from "creative tailoring" to **a
 - The backend is a **Type-Safe Monolith**.
 - By converting the backend from JavaScript to TypeScript, we achieved a "Type Contract" between the AI service and the API routes.
 - Error handling was refactored to emit **JSON instead of HTML**, ensuring the React frontend can gracefully handle and display errors using `react-hot-toast`.
+- Defensive AI Guardrails: The system prompts are engineered with strict failure conditions. If a user uploads an invalid file (e.g., a cooking recipe instead of a resume), the AI is instructed to return specific error strings. The Express server intercepts this, prevents the invalid data from reaching the frontend, and explicitly throws a 422 Unprocessable Entity error.
 
 ---
 
@@ -63,3 +64,9 @@ Processing multiple candidates requires a shift from "creative tailoring" to **a
 
 - **Decision:** Replaced hardcoded styles with a centralized **CSS Variable System** and used Zustand's `useShallow` for state subscriptions.
 - **Reasoning:** Standardizing on variables like `--blue` and `--text-main` ensures a unified brand identity. Using `useShallow` prevents massive components from re-rendering unnecessarily, maintaining a 60fps experience even with complex resume layouts.
+
+### 3. DRY Schema Generation (Single Source of Truth)
+
+- **Decision**: Implemented a custom schemaFactory utility to automatically generate Gemini AI schemas directly from the shared TypeScript interfaces.
+
+- **Reasoning**: Manually maintaining massive JSON schemas for the AI prompt creates a high risk of a "Type Desync" between the backend and frontend. By dynamically crawling a template of the Resume and LeaderboardEntry interfaces, the backend automatically updates the AI's requirements if a field is added to the shared utils package. This creates a true Single Source of Truth.
