@@ -5,7 +5,7 @@ export const NAVIGATION_CONFIG: Record<ViewModeType, NavigationStep[]> = {
   [ViewMode.Candidate]: [
     {
       label: "Setup",
-      path: "/candidate",
+      path: ["/candidate", "/"],
       isDisabled: () => false,
     },
     {

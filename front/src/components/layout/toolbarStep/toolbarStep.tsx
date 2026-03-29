@@ -6,9 +6,9 @@ import type { NavigationStep } from "@/types/navigationStep";
 interface ToolbarStepProps {
   step: NavigationStep;
   index: number;
+  currentPath: string;
   navigate: NavigateFunction;
   onExportClick?: () => boolean;
-  currentPath?: string;
   isNextStepReady?: boolean;
   showDivider?: boolean;
 }
@@ -22,14 +22,16 @@ export default function ToolbarStep({
   isNextStepReady,
   showDivider,
 }: ToolbarStepProps) {
-  const isCurrentPath = currentPath === step.path;
+  const isCurrentPath = Array.isArray(step.path)
+    ? step.path.includes(currentPath)
+    : currentPath === step.path;
   const isExportAction = onExportClick !== undefined;
 
   const handleClick = () => {
     if (onExportClick) {
       onExportClick();
     } else {
-      navigate(step.path);
+      navigate(Array.isArray(step.path) ? step.path[0] : step.path);
     }
   };
 
