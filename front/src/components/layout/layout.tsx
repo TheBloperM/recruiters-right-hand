@@ -52,7 +52,10 @@ export default function Layout() {
 
   return (
     <div className={style.appContainer}>
-      <Toaster position="top-right" toastOptions={{ duration: 7000 }} />
+      <Toaster
+        position="bottom-right"
+        toastOptions={{ duration: 7000, className: style.toast }}
+      />
       <nav className={style.toolbarContainer}>
         <div className={style.toolbarFlexContainer}>
           <span>
