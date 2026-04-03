@@ -67,6 +67,7 @@ export default function SetupFormUI<T>({
         files={files}
         onAdd={addFile}
         onRemove={removeFile}
+        disabled={isProcessing}
         allowMultiple={allowMultiple}
       />
 
