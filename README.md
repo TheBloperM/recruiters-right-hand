@@ -54,11 +54,14 @@ cd recruiters-right-hand
 ```
 
 **2. Set up your Environment Variables**
-Navigate to the `backend/` folder and create a `.env` file. Add your Google Gemini API Key:
+Navigate to the `backend/` folder and create a `.env` file. Add your Google Gemini API Key.
+The port, the Gemini model you would like to use and the request type are all optional:
 
 ```env
 GEMINI_API_KEY=your_google_gemini_api_key_here
 PORT=3000
+GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MIME_TYPE=application/json
 ```
 
 **3. The "God Command" (Install, Build, and Run)**

@@ -1,6 +1,6 @@
-import { Type, Schema } from "@google/genai";
+import { Schema } from "@google/genai";
 import { Resume, SkillLevelType } from "recruiters-utils";
-import { generateSchema } from "./factory.js";
+import { generateSchema } from "../utils/schemasFactory.util.js";
 
 const resumeTemplate: Resume = {
   name: "",

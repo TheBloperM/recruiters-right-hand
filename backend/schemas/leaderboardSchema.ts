@@ -1,6 +1,6 @@
 import { Schema } from "@google/genai";
 import { LeaderboardEntry } from "recruiters-utils";
-import { generateSchema } from "./factory.js";
+import { generateSchema } from "../utils/schemasFactory.util.js";
 
 const template: LeaderboardEntry = {
   candidateName: "",
