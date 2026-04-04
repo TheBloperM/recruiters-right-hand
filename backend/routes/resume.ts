@@ -1,12 +1,12 @@
 import { Router, Request, Response } from "express";
-import { sendRequestToGemini } from "../services/gemini.service.js";
-import { aiRankingPrompt, aiTailoringPrompt } from "../consts/prompts.js";
-import { resumeSchema } from "schemas/resumeSchema.js";
-import { leaderboardSchema } from "schemas/leaderboardSchema.js";
+import { sendRequestToGemini } from "#services/gemini.service.js";
+import { aiRankingPrompt, aiTailoringPrompt } from "#consts/prompts.js";
+import { resumeSchema } from "#schemas/resumeSchema.js";
+import { leaderboardSchema } from "#schemas/leaderboardSchema.js";
 import { LeaderboardEntry, Resume } from "recruiters-utils";
-import { OutputValidityCheck } from "types/outputValidityCheck.js";
+import { OutputValidityCheck } from "#types/outputValidityCheck.js";
 import multer from "multer";
-import { parsePdfsToText } from "middleware/pdfParser.js";
+import { parsePdfsToText } from "#middleware/pdfParser.js";
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });

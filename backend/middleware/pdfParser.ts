@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { extractTextFromFiles } from "../services/pdf.service.js";
+import { extractTextFromFiles } from "#services/pdf.service.js";
 
 export const parsePdfsToText = async (
   req: Request,

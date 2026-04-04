@@ -17,8 +17,8 @@ import { createServer } from "http";
 import debugLib from "debug";
 
 // Routes
-import indexRouter from "./routes/index.js";
-import resumeRouter from "./routes/resume.js";
+import indexRouter from "#routes/index.js";
+import resumeRouter from "#routes/resume.js";
 
 const debug = debugLib("backend:server");
 const app: Express = express();

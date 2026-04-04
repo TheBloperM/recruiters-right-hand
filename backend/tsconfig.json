@@ -16,7 +16,6 @@
 
     // Useful for Express error handling
     "noImplicitAny": false,
-    "baseUrl": ".",
     "paths": {
       "recruiters-utils": ["../recruiters-utils/src/index.ts"]
     }
