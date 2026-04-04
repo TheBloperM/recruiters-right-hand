@@ -1,0 +1,6 @@
+-- Create Branch refactor-submit-logic to redirect
+-- Move AI API config to .env
+-- Try catch in the function
+-- Search how to add global prefix- api
+-- Move prompts to const file
+-- Move toolbar left and move toast up.

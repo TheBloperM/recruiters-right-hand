@@ -9,6 +9,7 @@ import { useShallow } from "zustand/shallow";
 import { NAVIGATION_CONFIG } from "@/utils/navigationUtils";
 import { ViewMode } from "@/types/viewMode";
 import { FaChevronDown } from "react-icons/fa";
+import { toastDuration } from "@/utils/toastUtils";
 
 export default function Layout() {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ export default function Layout() {
     <div className={style.appContainer}>
       <Toaster
         position="top-right"
-        toastOptions={{ duration: 7000, className: style.toast }}
+        toastOptions={{ duration: toastDuration, className: style.toast }}
       />
       <nav className={style.toolbarContainer}>
         <div className={style.toolbarFlexContainer}>

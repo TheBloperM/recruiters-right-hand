@@ -31,15 +31,13 @@ export function TailoringSetup() {
   const subtTile =
     "Upload your existing resume and paste the target job description. \n Our AI will intelligently rewrite your experience, summary, and skills to perfectly match the role and bypass Applicant Tracking Systems (ATS).";
 
-  const buttonLabel = "Generate Tailored Resume";
-
   return (
     <SetupForm
       title={title}
       subtitle={subtTile}
-      buttonText={buttonLabel}
       onSubmit={submitResumeForTailoring}
       onSuccess={onResumeSuccessfulyTrailored}
+      toastMessage="Tailor"
     />
   );
 }

@@ -5,28 +5,30 @@ import FileUploader from "./fileUploader/fileUploader";
 import { useAutoResize } from "@/hooks/useAutoResize";
 import { Loading } from "./loading/loading";
 import toast from "react-hot-toast";
+import { defaultToastMessage } from "@/utils/toastUtils";
 
 interface SetupFormUIProps<T> {
   title: string;
   subtitle: string;
-  buttonText: string;
   onSubmit: (files: File[], jobDescription: string) => Promise<T>;
   onSuccess: (response: T) => void;
   allowMultiple?: boolean;
+  toastMessage?: string;
 }
 
 export default function SetupFormUI<T>({
   title,
   subtitle,
-  buttonText,
   onSubmit,
   onSuccess,
   allowMultiple = false,
+  toastMessage,
 }: SetupFormUIProps<T>) {
   const [jobDescription, setJobDescription] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const textareaRef = useAutoResize(jobDescription);
+  const setupToastMessage = toastMessage || defaultToastMessage;
 
   const addFile = (newFiles: File[]) => {
     setFiles((prev) => {
@@ -49,21 +51,18 @@ export default function SetupFormUI<T>({
     if (isProcessing) return;
 
     setIsProcessing(true);
-    try {
-      toast.loading("Processing...");
-      const response = await onSubmit(files, jobDescription);
-      onSuccess(response);
-      toast.success("Processing complete!");
-    } catch (error: unknown) {
-      console.error(error);
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Failed to process the request.";
-      toast.error(message);
-    } finally {
-      setIsProcessing(false);
-    }
+    toast
+      .promise(
+        onSubmit(files, jobDescription).then((res) => {
+          onSuccess(res);
+        }),
+        {
+          loading: `${setupToastMessage}ing your request`,
+          success: `${setupToastMessage}ing complete`,
+          error: (err) => err.message,
+        },
+      )
+      .finally(() => setIsProcessing(false));
   };
 
   return (
@@ -102,7 +101,7 @@ export default function SetupFormUI<T>({
         className={style.submitButton}
         disabled={!jobDescription || files.length === 0 || isProcessing}
       >
-        {isProcessing ? "Processing..." : buttonText}
+        {isProcessing ? "Processing..." : "Submit"}
       </button>
     </form>
   );

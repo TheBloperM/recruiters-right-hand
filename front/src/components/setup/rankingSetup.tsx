@@ -31,15 +31,18 @@ export function RankingSetup() {
     setLeaderboard(response.leaderboard);
   };
 
+  const title = "Rank Your Resumes";
+
+  const subtitle =
+    "Upload your resumes and paste the target job description. \n Our AI will intelligently rank your candidates based on their fit for the role.";
+
   return (
     <SetupForm
-      title={"Rank Your Resumes"}
-      subtitle={
-        "Upload your resumes and paste the target job description. \n Our AI will intelligently rank your candidates based on their fit for the role."
-      }
-      buttonText={"Rank Resumes"}
+      title={title}
+      subtitle={subtitle}
       onSubmit={submitResumesForRanking}
       onSuccess={onResumesSuccessfulyRanked}
+      toastMessage="Rank"
       allowMultiple
     />
   );
