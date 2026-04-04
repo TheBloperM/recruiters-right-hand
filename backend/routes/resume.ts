@@ -1,78 +1,101 @@
 import { Router, Request, Response } from "express";
-import {
-  rankResumesForJobDescription,
-  tailorResumeForJobDescription,
-} from "../services/aiService.js";
+import { sendRequestToGemini } from "#services/gemini.service.js";
+import { aiRankingPrompt, aiTailoringPrompt } from "#consts/prompts.js";
+import { resumeSchema } from "#schemas/resumeSchema.js";
+import { leaderboardSchema } from "#schemas/leaderboardSchema.js";
+import { LeaderboardEntry, Resume } from "recruiters-utils";
+import { OutputValidityCheck } from "#types/outputValidityCheck.js";
+import multer from "multer";
+import { parsePdfsToText } from "#middleware/pdfParser.js";
 
 const router = Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
-router.post("/tailor", async (req: Request, res: Response) => {
-  try {
-    const { jobDescription, resume: oldResume } = req.body;
+router.post(
+  "/tailor",
+  upload.single("resume"),
+  parsePdfsToText,
+  async (req: Request, res: Response) => {
+    try {
+      const { jobDescription, extractedPDFs: oldResume } = req.body;
 
-    if (!jobDescription || !oldResume) {
-      return res
-        .status(400)
-        .json({ error: "jobDescription and resume are required" });
+      if (!jobDescription || !oldResume) {
+        return res.status(400).json({
+          error: "job description and resume are required to tailor a resume",
+        });
+      }
+
+      console.log("Tailoring resume...");
+      const tailoringValidityCheck: OutputValidityCheck<Resume> = {
+        isValid: (resume) => !resume.name.includes("ERROR"),
+        message:
+          "Either the job description or the resume contains invalid content.",
+        status: 422,
+      };
+
+      const resume = await sendRequestToGemini<Resume>({
+        prompt: aiTailoringPrompt,
+        jobDescription,
+        resumes: oldResume,
+        schema: resumeSchema,
+        outputValidityCheck: tailoringValidityCheck,
+      });
+
+      res.json({ resume });
+    } catch (error: any) {
+      console.error("AI Tailoring Error:", error);
+      res.status(error.status || 500).json({
+        error: "Failed to tailor resume",
+        details: error.message,
+      });
     }
+  },
+);
 
-    const resume = await tailorResumeForJobDescription(
-      oldResume,
-      jobDescription,
-    );
+router.post(
+  "/rank",
+  upload.array("resumes"),
+  parsePdfsToText,
+  async (req: Request, res: Response) => {
+    try {
+      const { jobDescription, extractedPDFs: resumes } = req.body;
 
-    if (resume.name.includes("ERROR")) {
-      const error: any = new Error(
-        "Either the job description or the resume contains invalid content.",
-      );
-      error.status = 422;
-      throw error;
+      if (!jobDescription || !resumes || !Array.isArray(resumes)) {
+        return res.status(400).json({
+          error:
+            "job description and a list of resumes are required to rank resumes",
+        });
+      }
+
+      console.log("Ranking resumes...");
+
+      const rankingValidityCheck: OutputValidityCheck<LeaderboardEntry[]> = {
+        isValid: (leaderboard) =>
+          !leaderboard.some(
+            (entry) => entry.summary === "ERROR: INVALID_DOCUMENT_TYPE",
+          ),
+        message:
+          "The job description or one or more of the candidate resumes are invalid.",
+        status: 422,
+      };
+
+      const leaderboard = await sendRequestToGemini<LeaderboardEntry[]>({
+        prompt: aiRankingPrompt,
+        jobDescription,
+        resumes,
+        schema: leaderboardSchema,
+        outputValidityCheck: rankingValidityCheck,
+      });
+
+      res.json({ leaderboard });
+    } catch (error: any) {
+      console.error("AI Ranking Error:", error);
+      res.status(error.status || 500).json({
+        error: "Failed to rank resumes",
+        details: error.message,
+      });
     }
-
-    res.json({ resume });
-  } catch (error: any) {
-    console.error("AI Tailoring Error:", error);
-    res.status(error.status || 500).json({
-      error: "Failed to tailor resume",
-      details: error.message,
-    });
-  }
-});
-
-router.post("/rank", async (req: Request, res: Response) => {
-  try {
-    const { jobDescription, resumes } = req.body;
-
-    if (!jobDescription || !resumes || !Array.isArray(resumes)) {
-      return res
-        .status(400)
-        .json({ error: "jobDescription and resumes[] are required" });
-    }
-
-    const leaderboard = await rankResumesForJobDescription(
-      resumes,
-      jobDescription,
-    );
-
-    if (
-      leaderboard.some(
-        (entry) => entry.summary === "ERROR: INVALID_DOCUMENT_TYPE",
-      )
-    ) {
-      const error: any = new Error(
-        "The job description or one or more of the candidate resumes are invalid.",
-      );
-      error.status = 422;
-      throw error;
-    }
-    res.json({ leaderboard });
-  } catch (error: any) {
-    console.error("AI Ranking Error:", error);
-    res.status(error.status || 500).json({
-      error: "Failed to rank resumes",
-      details: error.message,
-    });
-  }
-});
+  },
+);
 
 export default router;

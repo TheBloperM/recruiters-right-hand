@@ -16,9 +16,10 @@ export default function ResumeComponent() {
 
   useEffect(() => {
     if (!resume) {
-      navigate("/recruiter", { replace: true });
+      navigate("/candidate", { replace: true });
     }
   }, [resume, navigate]);
+
   if (!resume) {
     return null;
   }

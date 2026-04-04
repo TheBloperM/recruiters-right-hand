@@ -4,6 +4,7 @@ import FileTag from "./fileTag/fileTag";
 
 interface FileUploaderProps {
   files: File[];
+  disabled?: boolean;
   allowMultiple?: boolean;
   onAdd: (newFiles: File[]) => void;
   onRemove: (index: number) => void;
@@ -14,6 +15,7 @@ export default function FileUploader({
   allowMultiple,
   onAdd,
   onRemove,
+  disabled,
 }: FileUploaderProps) {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -38,6 +40,7 @@ export default function FileUploader({
           accept=".pdf"
           onChange={handleFileChange}
           className={style.hiddenFileInput}
+          disabled={disabled}
         />
         <div className={style.dropzoneContent}>
           <span className={style.uploadIcon}>
@@ -54,6 +57,7 @@ export default function FileUploader({
               key={`${file.name}-${index}`}
               fileName={file.name}
               onRemove={() => onRemove(index)}
+              disabled={disabled}
             />
           ))}
         </div>

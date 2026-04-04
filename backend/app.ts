@@ -17,9 +17,8 @@ import { createServer } from "http";
 import debugLib from "debug";
 
 // Routes
-import indexRouter from "./routes/index.js";
-import resumeRouter from "./routes/resume.js";
-import filesRouter from "./routes/file.js";
+import indexRouter from "#routes/index.js";
+import resumeRouter from "#routes/resume.js";
 
 const debug = debugLib("backend:server");
 const app: Express = express();
@@ -35,7 +34,6 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 // --- Routes ---
 app.use("/", indexRouter);
 app.use("/resume", resumeRouter);
-app.use("/file", filesRouter);
 
 // --- Error Handling ---
 app.use((req: Request, res: Response, next: NextFunction) => {
