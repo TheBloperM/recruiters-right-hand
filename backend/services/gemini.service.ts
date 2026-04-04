@@ -1,6 +1,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { insertDataToPrompt } from "#utils/prompts.util.js";
-import { GeminiRequestProps } from "#types/geminiRequestProps.js";
+import { insertDataToPrompt } from "@/utils/prompts.util.js";
+import { GeminiRequestProps } from "@/types/geminiRequestProps.js";
 
 const ai = new GoogleGenAI({});
 const defaultGeminiModel = "gemini-2.5-flash";
