@@ -6,16 +6,16 @@ export function TailoringSetup() {
   const { setResume } = useAppStore();
 
   const submitResumeForTailoring = async (
-    texts: string[],
+    files: File[],
     jobDescription: string,
   ) => {
+    const formData = new FormData();
+    formData.append("jobDescription", jobDescription);
+    formData.append("resume", files[0]);
+
     const tailorRes = await fetch("http://localhost:3000/resume/tailor", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        jobDescription,
-        resume: texts[0],
-      }),
+      body: formData,
     });
 
     if (!tailorRes.ok) throw new Error("Failed to tailor resume via AI");

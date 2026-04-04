@@ -1,16 +1,16 @@
 import classNames from "classnames";
 import { useState, type ChangeEvent } from "react";
 import style from "./setupForm.module.css";
-import useFileProcessing from "@/hooks/useFileProccessing";
 import FileUploader from "./fileUploader/fileUploader";
 import { useAutoResize } from "@/hooks/useAutoResize";
 import { Loading } from "./loading/loading";
+import toast from "react-hot-toast";
 
 interface SetupFormUIProps<T> {
   title: string;
   subtitle: string;
   buttonText: string;
-  onSubmit: (texts: string[], jobDescription: string) => Promise<T>;
+  onSubmit: (files: File[], jobDescription: string) => Promise<T>;
   onSuccess: (response: T) => void;
   allowMultiple?: boolean;
 }
@@ -25,12 +25,8 @@ export default function SetupFormUI<T>({
 }: SetupFormUIProps<T>) {
   const [jobDescription, setJobDescription] = useState("");
   const [files, setFiles] = useState<File[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const textareaRef = useAutoResize(jobDescription);
-
-  const { proccessFiles, isProcessing } = useFileProcessing({
-    onSubmit: onSubmit,
-    onSuccess: onSuccess,
-  });
 
   const addFile = (newFiles: File[]) => {
     setFiles((prev) => {
@@ -48,10 +44,25 @@ export default function SetupFormUI<T>({
     setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!isProcessing) {
-      proccessFiles(files, jobDescription);
+    if (isProcessing) return;
+
+    setIsProcessing(true);
+    try {
+      toast.loading("Processing...");
+      const response = await onSubmit(files, jobDescription);
+      onSuccess(response);
+      toast.success("Processing complete!");
+    } catch (error: unknown) {
+      console.error(error);
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to process the request.";
+      toast.error(message);
+    } finally {
+      setIsProcessing(false);
     }
   };
 

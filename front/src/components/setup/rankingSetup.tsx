@@ -6,16 +6,19 @@ export function RankingSetup() {
   const setLeaderboard = useAppStore((state) => state.setLeaderboard);
 
   const submitResumesForRanking = async (
-    texts: string[],
+    files: File[],
     jobDescription: string,
   ) => {
+    const formData = new FormData();
+    formData.append("jobDescription", jobDescription);
+
+    files.forEach((file) => {
+      formData.append("resumes", file);
+    });
+
     const rankingRes = await fetch("http://localhost:3000/resume/rank", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        jobDescription,
-        resumes: texts,
-      }),
+      body: formData,
     });
 
     if (!rankingRes.ok) throw new Error("Failed to rank resumes via AI");
