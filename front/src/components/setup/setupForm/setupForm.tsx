@@ -4,6 +4,7 @@ import style from "./setupForm.module.css";
 import useFileProcessing from "@/hooks/useFileProccessing";
 import FileUploader from "./fileUploader/fileUploader";
 import { useAutoResize } from "@/hooks/useAutoResize";
+import { Loading } from "./loading/loading";
 
 interface SetupFormUIProps<T> {
   title: string;
@@ -49,8 +50,9 @@ export default function SetupFormUI<T>({
 
   const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isProcessing) return;
-    proccessFiles(files, jobDescription);
+    if (!isProcessing) {
+      proccessFiles(files, jobDescription);
+    }
   };
 
   return (
@@ -58,6 +60,7 @@ export default function SetupFormUI<T>({
       onSubmit={handleSubmit}
       className={classNames(style.pageWrapper, style.formContainer)}
     >
+      <Loading isLoading={isProcessing} isModal />
       <div className={style.headerSection}>
         <h1 className={style.title}>{title}</h1>
         <p className={style.subtitle}>{subtitle}</p>
