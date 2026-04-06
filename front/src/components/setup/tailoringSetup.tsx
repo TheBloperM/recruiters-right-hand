@@ -6,16 +6,16 @@ export function TailoringSetup() {
   const { setResume } = useAppStore();
 
   const submitResumeForTailoring = async (
-    texts: string[],
+    files: File[],
     jobDescription: string,
   ) => {
+    const formData = new FormData();
+    formData.append("jobDescription", jobDescription);
+    formData.append("resume", files[0]);
+
     const tailorRes = await fetch("http://localhost:3000/resume/tailor", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        jobDescription,
-        resume: texts[0],
-      }),
+      body: formData,
     });
 
     if (!tailorRes.ok) throw new Error("Failed to tailor resume via AI");
@@ -31,15 +31,13 @@ export function TailoringSetup() {
   const subtTile =
     "Upload your existing resume and paste the target job description. \n Our AI will intelligently rewrite your experience, summary, and skills to perfectly match the role and bypass Applicant Tracking Systems (ATS).";
 
-  const buttonLabel = "Generate Tailored Resume";
-
   return (
     <SetupForm
       title={title}
       subtitle={subtTile}
-      buttonText={buttonLabel}
       onSubmit={submitResumeForTailoring}
       onSuccess={onResumeSuccessfulyTrailored}
+      toastMessage="Tailor"
     />
   );
 }
